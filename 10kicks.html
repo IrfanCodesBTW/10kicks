@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>10KICKS — Premium Sneaker Catalogue</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Roboto',sans-serif;background:#0a0a0a;color:#fff;overflow-x:hidden}
+img{display:block;max-width:100%}
+button{font-family:'Roboto',sans-serif;cursor:pointer}
+.pg{display:none;min-height:100vh}
+.pg.active{display:block;animation:fadeUp .35s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.pg-flex{display:none;min-height:100vh;align-items:center;justify-content:center}
+.pg-flex.active{display:flex;animation:fadeUp .35s ease}
+
+/* HEADER */
+#main-header{position:sticky;top:0;z-index:900;background:#fff;border-bottom:2px solid #e8e8e8;padding:0 24px;height:64px;display:none;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-family:'Poppins',sans-serif;font-size:24px;font-weight:900;color:#000;letter-spacing:-1px;white-space:nowrap;cursor:pointer;border:none;background:none}
+.brand span{color:#e63232}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-links a{text-decoration:none;color:#222;font-weight:700;font-size:13px;cursor:pointer;transition:color .2s}
+.nav-links a:hover{color:#e63232}
+.search-wrap{display:flex;align-items:center;gap:6px}
+.srch-in{padding:0 13px;height:38px;border:1.5px solid #ddd;border-radius:8px;font-size:13px;outline:none;transition:border .2s;width:180px}
+.srch-in:focus{border-color:#e63232}
+.srch-btn{height:38px;padding:0 14px;background:#111;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;transition:background .2s}
+.srch-btn:hover{background:#e63232}
+.hdr-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{background:none;border:none;padding:4px 6px;position:relative;font-size:20px;line-height:1;cursor:pointer}
+.icon-cnt{position:absolute;top:-4px;right:-2px;background:#e63232;color:#fff;border-radius:50%;font-size:9px;font-weight:700;width:16px;height:16px;display:none;align-items:center;justify-content:center;transition:transform .25s}
+.icon-cnt.show{display:flex}
+.hdr-login{height:36px;padding:0 15px;background:#fff;color:#000;border:2px solid #000;border-radius:8px;font-weight:700;font-size:13px;transition:all .2s}
+.hdr-login:hover{background:#000;color:#fff}
+.hdr-user{height:36px;padding:0 12px;background:#f5f5f5;color:#000;border:1.5px solid #ddd;border-radius:8px;font-weight:700;font-size:13px;display:none}
+.ham{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px}
+.ham span{display:block;width:24px;height:2.5px;background:#000;border-radius:2px;transition:all .3s}
+.ham.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.ham.open span:nth-child(2){opacity:0}
+.ham.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mob-menu{display:none;flex-direction:column;gap:13px;padding:14px 22px;background:#fff;border-bottom:2px solid #eee;position:sticky;top:64px;z-index:899}
+.mob-menu.show{display:flex}
+.mob-menu a{font-weight:700;color:#000;font-size:15px;cursor:pointer}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;background:url('https://wallpapers.com/images/hd/sneaker-mysterious-jordan-4-retro-x499s7jambwdigab.jpg') center/cover no-repeat;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 20px}
+.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(0,0,0,.7),rgba(0,0,0,.35))}
+.hero-body{position:relative;z-index:1}
+.hero-pill{display:inline-block;background:#e63232;color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 16px;border-radius:20px;margin-bottom:20px}
+.hero h1{font-family:'Poppins',sans-serif;font-size:clamp(38px,7vw,80px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:18px}
+.hero p{font-size:clamp(15px,2.5vw,19px);color:rgba(255,255,255,.82);margin-bottom:38px}
+.hero-cta{height:50px;padding:0 34px;background:#fff;color:#000;border:none;border-radius:10px;font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .3s;box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.hero-cta:hover{background:#e63232;color:#fff;transform:scale(1.05)}
+
+/* SECTION HEADER */
+.sec-hdr{text-align:center;padding:42px 20px 18px}
+.sec-title{font-family:'Poppins',sans-serif;font-size:clamp(24px,4vw,38px);font-weight:900;letter-spacing:-.6px}
+.sec-title span{color:#e63232}
+.sec-sub{color:#666;font-size:14px;margin-top:6px}
+
+/* BRANDS */
+.brands-bg{background:#111;min-height:100vh;padding-bottom:50px}
+.filter-bar{display:flex;justify-content:center;padding:6px 20px 18px}
+.filter-in{width:100%;max-width:360px;height:42px;padding:0 17px;border:1.5px solid #252525;border-radius:10px;background:#191919;color:#fff;font-size:14px;outline:none;transition:border .2s}
+.filter-in:focus{border-color:#e63232}
+.brand-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;padding:0 30px 48px;max-width:860px;margin:0 auto}
+.brand-card{background:#191919;border-radius:18px;padding:26px 18px;text-align:center;cursor:pointer;border:1.5px solid #222;transition:all .3s}
+.brand-card:hover{transform:translateY(-7px);box-shadow:0 18px 44px rgba(230,50,50,.18);border-color:#e63232}
+.brand-card img{width:120px;height:120px;object-fit:contain;margin:0 auto}
+.brand-label{font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;margin-top:13px;color:#fff}
+.brand-card.hide{display:none}
+
+/* CATALOGUE */
+.cat-bg{background:#111;min-height:100vh;padding-bottom:60px}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;padding:0 26px 38px;max-width:1100px;margin:0 auto}
+.prod-card{background:#1c1c1c;border-radius:15px;overflow:hidden;border:1.5px solid #242424;position:relative;transition:all .35s;cursor:pointer}
+.prod-card:hover{transform:translateY(-5px);box-shadow:0 12px 34px rgba(0,0,0,.5);border-color:#383838}
+.prod-thumb{width:100%;height:170px;object-fit:contain;background:#f5f5f5;transition:transform .4s;padding:10px}
+.prod-card:hover .prod-thumb{transform:scale(1.07)}
+.prod-cbody{padding:11px 12px 13px}
+.prod-card h3{font-size:12px;font-weight:700;color:#e0e0e0;margin-bottom:5px;line-height:1.4}
+.prod-prc{font-size:13px;color:#e63232;font-weight:700}
+.heart-btn{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.5);backdrop-filter:blur(5px);border:none;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;z-index:2}
+.heart-btn:hover,.heart-btn.on{background:#e63232}
+.quick-add{position:absolute;bottom:0;left:0;right:0;background:rgba(230,50,50,.9);color:#fff;font-size:12px;font-weight:700;padding:8px;text-align:center;opacity:0;transition:opacity .22s}
+.prod-card:hover .quick-add{opacity:1}
+
+/* DETAIL */
+.det-bg{background:#0d0d0d;min-height:100vh;padding-bottom:60px}
+.det-inner{max-width:900px;margin:0 auto;padding:0 20px 40px}
+.det-heading{font-family:'Poppins',sans-serif;font-size:clamp(17px,3.5vw,26px);font-weight:900;color:#fff;padding:26px 0 16px}
+.car-wrap{background:#f5f5f5;border-radius:15px;overflow:hidden}
+.carousel-item img{height:390px;object-fit:contain;background:#f5f5f5}
+.det-info{background:#151515;border:1.5px solid #1e1e1e;border-radius:15px;padding:24px;margin-top:16px}
+.det-info h2{font-family:'Poppins',sans-serif;font-size:17px;font-weight:800;color:#fff;margin-bottom:5px}
+.det-price-val{font-size:22px;font-weight:900;color:#e63232;font-family:'Poppins',sans-serif;margin-bottom:4px}
+.tax-note{font-size:11px;color:#444;margin-bottom:13px}
+.det-desc{color:#888;font-size:13px;line-height:1.7;margin-bottom:14px}
+.sz-label{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px}
+.sizes{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+.sz{width:42px;height:34px;background:#1a1a1a;border:1.5px solid #2e2e2e;color:#bbb;border-radius:7px;font-size:12px;font-weight:700;transition:all .2s}
+.sz:hover,.sz.sel{background:#e63232;border-color:#e63232;color:#fff}
+.qty-row{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.qty-lbl{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.6px}
+.qty-ctrl{display:flex;align-items:center;border:1.5px solid #2e2e2e;border-radius:7px;overflow:hidden}
+.qty-ctrl button{width:32px;height:32px;background:#1a1a1a;border:none;color:#fff;font-size:16px;font-weight:700;transition:background .2s}
+.qty-ctrl button:hover{background:#e63232}
+.qty-num{width:38px;height:32px;text-align:center;background:#111;color:#fff;border:none;border-left:1px solid #2e2e2e;border-right:1px solid #2e2e2e;font-size:14px;font-weight:700}
+.det-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn-cart{flex:2;min-width:130px;height:46px;background:#e63232;color:#fff;border:none;border-radius:9px;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;transition:all .25s}
+.btn-cart:hover{background:#c42020;transform:translateY(-2px)}
+.btn-wish{flex:1;min-width:110px;height:46px;background:transparent;color:#fff;border:2px solid #2e2e2e;border-radius:9px;font-weight:700;font-size:13px;transition:all .25s}
+.btn-wish:hover{border-color:#e63232;color:#e63232}
+
+/* BACK BTN */
+.back-btn{display:inline-flex;align-items:center;gap:7px;margin:16px 0 4px;padding:9px 18px;background:#181818;color:#bbb;border:1.5px solid #272727;border-radius:9px;font-weight:700;font-size:13px;transition:all .2s}
+.back-btn:hover{background:#fff;color:#000;border-color:#fff}
+
+/* LOGIN */
+#pg-login{background:#0a0a0a}
+.auth-box{background:#121212;border:1.5px solid #1e1e1e;border-radius:20px;padding:38px 34px;width:100%;max-width:410px;margin:20px}
+.auth-logo{font-family:'Poppins',sans-serif;font-size:26px;font-weight:900;color:#fff;text-align:center;margin-bottom:5px}
+.auth-logo span{color:#e63232}
+.auth-sub{color:#555;font-size:13px;text-align:center;margin-bottom:26px}
+.auth-tabs{display:flex;background:#0c0c0c;border-radius:9px;padding:3px;margin-bottom:22px}
+.auth-tab{flex:1;height:34px;background:none;border:none;color:#555;font-size:13px;font-weight:700;border-radius:7px;transition:all .2s}
+.auth-tab.active{background:#e63232;color:#fff}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.fg input{width:100%;height:42px;padding:0 13px;background:#0c0c0c;border:1.5px solid #1e1e1e;border-radius:9px;color:#fff;font-size:14px;outline:none;transition:border .2s}
+.fg input:focus{border-color:#e63232}
+.auth-submit{width:100%;height:44px;background:#e63232;color:#fff;border:none;border-radius:9px;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;margin-top:4px;transition:all .25s}
+.auth-submit:hover{background:#c42020;transform:translateY(-1px)}
+.auth-div{text-align:center;color:#2a2a2a;font-size:12px;margin:14px 0;position:relative}
+.auth-div::before,.auth-div::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:#1e1e1e}
+.auth-div::before{left:0}.auth-div::after{right:0}
+.auth-skip{width:100%;height:42px;background:transparent;color:#555;border:1.5px solid #1e1e1e;border-radius:9px;font-size:13px;font-weight:700;transition:all .2s}
+.auth-skip:hover{border-color:#888;color:#ccc}
+.auth-err{background:rgba(230,50,50,.09);border:1px solid rgba(230,50,50,.25);color:#e63232;font-size:12px;padding:8px 11px;border-radius:7px;margin-bottom:11px;display:none}
+.auth-err.show{display:block}
+
+/* PANELS */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1100;display:none;justify-content:flex-end}
+.overlay.show{display:flex;animation:fo .2s}
+@keyframes fo{from{opacity:0}to{opacity:1}}
+.side-panel{width:370px;max-width:92vw;height:100vh;background:#101010;display:flex;flex-direction:column;overflow:hidden;animation:si .3s ease}
+@keyframes si{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.panel-head{padding:18px 20px 14px;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;justify-content:space-between}
+.panel-head h2{font-family:'Poppins',sans-serif;font-size:17px;font-weight:900}
+.close-pan{background:none;border:none;color:#666;font-size:22px;line-height:1;transition:color .2s}
+.close-pan:hover{color:#fff}
+.panel-body{flex:1;overflow-y:auto;padding:14px}
+.panel-body::-webkit-scrollbar{width:3px}
+.panel-body::-webkit-scrollbar-track{background:#0a0a0a}
+.panel-body::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px}
+.panel-foot{padding:14px 18px;border-top:1px solid #1c1c1c}
+.empty-msg{color:#3a3a3a;font-size:14px;text-align:center;margin-top:60px;line-height:1.7}
+.cart-item{display:flex;align-items:center;gap:11px;background:#171717;border-radius:11px;padding:11px;margin-bottom:9px}
+.cart-item img{width:60px;height:60px;object-fit:contain;background:#f5f5f5;border-radius:7px;flex-shrink:0}
+.ci-info{flex:1;min-width:0}
+.ci-name{font-size:12px;font-weight:700;color:#d5d5d5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci-sub{font-size:11px;color:#555;margin-top:2px}
+.ci-price{font-size:13px;font-weight:700;color:#e63232;margin-top:4px}
+.cart-qty{display:flex;align-items:center;gap:5px;margin-top:5px}
+.cqb{width:22px;height:22px;background:#202020;border:none;color:#fff;border-radius:5px;font-size:14px;font-weight:700;transition:background .2s}
+.cqb:hover{background:#e63232}
+.cqn{font-size:12px;font-weight:700;min-width:16px;text-align:center}
+.rm-btn{background:none;border:none;color:#383838;font-size:18px;flex-shrink:0;transition:color .2s}
+.rm-btn:hover{color:#e63232}
+.total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.total-row .lbl{color:#777;font-size:13px}
+.total-row .amt{font-family:'Poppins',sans-serif;font-size:19px;font-weight:900;color:#fff}
+.checkout-btn{width:100%;height:46px;background:#e63232;color:#fff;border:none;border-radius:9px;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;transition:all .25s}
+.checkout-btn:hover{background:#c42020;transform:translateY(-1px)}
+.checkout-btn:disabled{background:#2a2a2a;color:#555;cursor:not-allowed;transform:none}
+.wish-item{display:flex;align-items:center;gap:11px;background:#171717;border-radius:11px;padding:11px;margin-bottom:9px}
+.wish-item img{width:54px;height:54px;object-fit:contain;background:#f5f5f5;border-radius:7px;flex-shrink:0}
+.wi-info{flex:1;min-width:0}
+.wi-name{font-size:12px;font-weight:700;color:#d5d5d5}
+.wi-price{font-size:12px;color:#e63232;margin-top:3px}
+.wi-cart-btn{background:#e63232;border:none;color:#fff;font-size:11px;font-weight:700;border-radius:6px;padding:4px 9px;margin-top:5px;transition:all .2s}
+.wi-cart-btn:hover{background:#c42020}
+
+/* PAYMENT */
+.pay-bg{background:#0a0a0a;min-height:100vh;padding:18px}
+.pay-wrap{max-width:820px;margin:0 auto}
+.pay-title{font-family:'Poppins',sans-serif;font-size:22px;font-weight:900;padding:22px 0 18px}
+.pay-grid{display:grid;grid-template-columns:1fr 320px;gap:20px}
+.pay-card{background:#111;border:1.5px solid #1c1c1c;border-radius:15px;padding:22px;margin-bottom:16px}
+.pay-card h3{font-family:'Poppins',sans-serif;font-size:14px;font-weight:800;margin-bottom:16px;color:#ccc}
+.pay-tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.pay-tab{padding:7px 16px;background:#0d0d0d;border:1.5px solid #222;border-radius:8px;color:#666;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s}
+.pay-tab.active{border-color:#e63232;color:#e63232;background:rgba(230,50,50,.07)}
+.pf{margin-bottom:12px}
+.pf label{display:block;font-size:11px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.pf input,.pf select{width:100%;height:40px;padding:0 12px;background:#0d0d0d;border:1.5px solid #1e1e1e;border-radius:8px;color:#fff;font-size:13px;outline:none;transition:border .2s}
+.pf input:focus,.pf select:focus{border-color:#e63232}
+.pf select option{background:#0d0d0d}
+.pay-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.upi-apps{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.upi-app{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 12px;background:#0d0d0d;border:1.5px solid #1e1e1e;border-radius:9px;cursor:pointer;transition:all .2s;font-size:11px;color:#666;font-weight:700}
+.upi-app:hover,.upi-app.sel{border-color:#e63232;color:#e63232;background:rgba(230,50,50,.06)}
+.upi-app .icon{font-size:20px}
+.net-banks{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
+.net-bank{padding:9px 12px;background:#0d0d0d;border:1.5px solid #1e1e1e;border-radius:7px;cursor:pointer;font-size:12px;font-weight:700;color:#666;transition:all .2s}
+.net-bank:hover,.net-bank.sel{border-color:#e63232;color:#fff;background:rgba(230,50,50,.06)}
+.ord-sum .si{display:flex;justify-content:space-between;font-size:13px;color:#666;margin-bottom:9px}
+.ord-sum .si.tot{border-top:1px solid #1e1e1e;padding-top:11px;margin-top:2px;color:#fff;font-weight:700;font-size:14px}
+.pay-now{width:100%;height:46px;background:#e63232;color:#fff;border:none;border-radius:9px;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;margin-top:14px;transition:all .25s;cursor:pointer}
+.pay-now:hover{background:#c42020}
+.pay-now:disabled{background:#2a2a2a;color:#555;cursor:not-allowed}
+.secure-note{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:8px;color:#333;font-size:11px}
+
+/* SUCCESS */
+#pg-success{background:#0a0a0a}
+.suc-box{text-align:center;padding:40px 20px;max-width:420px;margin:0 auto}
+.suc-icon{font-size:62px;margin-bottom:14px;animation:pop .5s ease}
+@keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+.suc-box h2{font-family:'Poppins',sans-serif;font-size:24px;font-weight:900;margin-bottom:9px}
+.suc-box p{color:#666;font-size:14px;margin-bottom:5px}
+.ord-id{display:inline-block;background:#191919;border:1px solid #252525;border-radius:8px;padding:5px 14px;font-size:13px;color:#e63232;font-weight:700;margin:11px 0 18px}
+.cont-btn{height:44px;padding:0 26px;background:#e63232;color:#fff;border:none;border-radius:9px;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all .25s}
+.cont-btn:hover{background:#c42020}
+
+/* FOOTER */
+#site-footer{background:#000;border-top:1px solid #161616;padding:34px 40px 18px;text-align:center;display:none}
+.ft-brand{font-family:'Poppins',sans-serif;font-size:20px;font-weight:900;margin-bottom:5px}
+.ft-brand span{color:#e63232}
+#site-footer p{color:#3a3a3a;font-size:12px}
+
+/* TOAST */
+#toast{position:fixed;bottom:22px;right:22px;z-index:9999;background:#111;color:#fff;border-left:4px solid #e63232;padding:11px 17px;border-radius:9px;font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.6);transform:translateX(130%);transition:transform .3s ease;white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(0)}
+
+/* SCROLL TOP */
+#scrollTop{position:fixed;bottom:78px;right:20px;z-index:950;background:#e63232;color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:17px;box-shadow:0 4px 14px rgba(230,50,50,.4);opacity:0;pointer-events:none;transition:opacity .3s;display:flex;align-items:center;justify-content:center}
+#scrollTop.visible{opacity:1;pointer-events:all}
+
+/* ABOUT OVERLAY */
+#about-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1200;display:none;align-items:center;justify-content:center}
+#about-overlay.show{display:flex;animation:fo .2s}
+.about-box{background:#131313;border:1.5px solid #1e1e1e;border-radius:18px;width:100%;max-width:480px;margin:20px;max-height:85vh;overflow-y:auto}
+.about-head{padding:22px 22px 0;display:flex;align-items:center;justify-content:space-between}
+.about-head h5{font-family:'Poppins',sans-serif;font-size:16px;font-weight:900}
+.about-close{background:none;border:none;color:#666;font-size:22px;cursor:pointer;line-height:1}
+.about-body{padding:14px 22px 22px}
+.tm-card{background:#191919;border-radius:11px;padding:14px;margin-bottom:10px}
+.tm-card h6{font-family:'Poppins',sans-serif;font-weight:800;font-size:13px;margin-bottom:4px}
+.tm-badge{display:inline-block;background:rgba(230,50,50,.12);color:#e63232;font-size:10px;font-weight:700;border-radius:5px;padding:2px 8px;margin-bottom:7px}
+.tm-card p{font-size:12px;color:#777}
+
+/* RESPONSIVE */
+@media(max-width:860px){.pay-grid{grid-template-columns:1fr}}
+@media(max-width:768px){
+  .nav-links,.search-wrap{display:none}
+  .ham{display:flex}
+  .brand{font-size:19px}
+  .prod-grid{grid-template-columns:repeat(2,1fr);padding:0 13px 28px;gap:11px}
+  .brand-grid{grid-template-columns:repeat(2,1fr);padding:0 14px 38px}
+}
+@media(max-width:480px){.det-actions{flex-direction:column}.suc-box{padding:30px 15px}}
+</style>
+</head>
+<body>
+
+<!-- ABOUT OVERLAY -->
+<div id="about-overlay" onclick="closeAboutOnBg(event)">
+  <div class="about-box">
+    <div class="about-head">
+      <h5>About 10<span style="color:#e63232">KICKS</span></h5>
+      <button class="about-close" onclick="closeAbout()">×</button>
+    </div>
+    <div class="about-body">
+      <p style="color:#666;font-size:13px;margin-bottom:16px;line-height:1.7">Three students, one shared passion. We built 10KICKS as a testament to our combined skills in coding, UI/UX design, and modern web development.</p>
+      <div class="tm-card">
+        <h6>👨‍💻 Irfan</h6>
+        <div class="tm-badge">252U1R1228 · Developer</div>
+        <p>Led structural development — landing page, navigation, product cards, layouts, and animations.</p>
+      </div>
+      <div class="tm-card">
+        <h6>👨‍💻 Jaswanth</h6>
+        <div class="tm-badge">252U1R1256 · Front-End Designer</div>
+        <p>Enhanced the landing page, brand category design, and maintained visual consistency throughout.</p>
+      </div>
+      <div class="tm-card">
+        <h6>👨‍💻 Dinesh</h6>
+        <div class="tm-badge">252U1R1227 · UI/UX Developer</div>
+        <p>Implemented carousels, detail pages, and smooth navigation between sections.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <button class="brand" onclick="showSection('pg-landing')">10<span>KICKS</span></button>
+  <nav class="nav-links">
+    <a onclick="showSection('pg-landing')">Home</a>
+    <a onclick="showSection('pg-brands')">Brands</a>
+    <a onclick="openAbout()">About</a>
+  </nav>
+  <div class="search-wrap">
+    <input type="text" id="hdr-search" class="srch-in" placeholder="Search sneakers…" onkeydown="if(event.key==='Enter')runSearch()"/>
+    <button class="srch-btn" onclick="runSearch()">Search</button>
+  </div>
+  <div class="hdr-actions">
+    <button class="icon-btn" onclick="openWishPanel()" title="Wishlist">🤍<span class="icon-cnt" id="wish-cnt">0</span></button>
+    <button class="icon-btn" onclick="openCartPanel()" title="Cart">🛒<span class="icon-cnt" id="cart-cnt">0</span></button>
+    <button class="hdr-login" id="btn-login" onclick="showSection('pg-login')">Login</button>
+    <button class="hdr-user" id="btn-user" onclick="handleUserBtn()"></button>
+  </div>
+  <button class="ham" id="ham-btn" onclick="toggleHam()"><span></span><span></span><span></span></button>
+</header>
+<div class="mob-menu" id="mob-menu">
+  <a onclick="goTo('pg-landing')">Home</a>
+  <a onclick="goTo('pg-brands')">Brands</a>
+  <a onclick="openAbout();closeMob()">About</a>
+  <a onclick="openCartPanel();closeMob()">🛒 Cart</a>
+  <a onclick="openWishPanel();closeMob()">🤍 Wishlist</a>
+</div>
+
+<!-- CART PANEL -->
+<div class="overlay" id="cart-overlay" onclick="closePanelBg(event,'cart-overlay')">
+  <div class="side-panel">
+    <div class="panel-head">
+      <h2>🛒 Cart</h2>
+      <button class="close-pan" onclick="closeCartPanel()">×</button>
+    </div>
+    <div class="panel-body" id="cart-body"></div>
+    <div class="panel-foot">
+      <div class="total-row">
+        <span class="lbl">Total</span>
+        <span class="amt" id="cart-total">₹0</span>
+      </div>
+      <button class="checkout-btn" id="chk-btn" onclick="goCheckout()">Proceed to Checkout →</button>
+    </div>
+  </div>
+</div>
+
+<!-- WISHLIST PANEL -->
+<div class="overlay" id="wish-overlay" onclick="closePanelBg(event,'wish-overlay')">
+  <div class="side-panel">
+    <div class="panel-head">
+      <h2>🤍 Wishlist</h2>
+      <button class="close-pan" onclick="closeWishPanel()">×</button>
+    </div>
+    <div class="panel-body" id="wish-body"></div>
+    <div class="panel-foot">
+      <button class="checkout-btn" style="background:#252525" onclick="moveAllWish()">Move All to Cart</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- LANDING -->
+<div id="pg-landing" class="pg">
+  <div class="hero">
+    <div class="hero-body">
+      <div class="hero-pill">🔥 New Drops Every Week</div>
+      <h1>Shop the Future.<br>Drop by Drop.</h1>
+      <p>The premium sneaker catalogue — one click, one smile.</p>
+      <button class="hero-cta" onclick="showSection('pg-brands')">Explore Brands →</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="pg-login" class="pg-flex">
+  <div class="auth-box">
+    <div class="auth-logo">10<span>KICKS</span></div>
+    <p class="auth-sub">Sign in to save your wishlist &amp; track orders</p>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-in" onclick="switchTab('in')">Sign In</button>
+      <button class="auth-tab" id="tab-up" onclick="switchTab('up')">Sign Up</button>
+    </div>
+    <div id="auth-err" class="auth-err"></div>
+    <!-- SIGN IN -->
+    <div id="form-in">
+      <div class="fg"><label>Email</label><input type="email" id="in-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <div class="fg"><label>Password</label><input type="password" id="in-pass" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <button class="auth-submit" onclick="doLogin()">Sign In</button>
+    </div>
+    <!-- SIGN UP -->
+    <div id="form-up" style="display:none">
+      <div class="fg"><label>Full Name</label><input type="text" id="up-name" placeholder="Your name"/></div>
+      <div class="fg"><label>Email</label><input type="email" id="up-email" placeholder="you@example.com"/></div>
+      <div class="fg"><label>Password</label><input type="password" id="up-pass" placeholder="Min 6 characters"/></div>
+      <button class="auth-submit" onclick="doSignup()">Create Account</button>
+    </div>
+    <div class="auth-div">or</div>
+    <button class="auth-skip" onclick="guestLogin()">Continue as Guest</button>
+  </div>
+</div>
+
+<!-- BRANDS -->
+<div id="pg-brands" class="pg">
+  <div class="brands-bg">
+    <div class="sec-hdr">
+      <div class="sec-title">Shop by <span>Brand</span></div>
+      <p class="sec-sub">Pick your favourite and explore the full catalogue</p>
+    </div>
+    <div class="filter-bar">
+      <input type="text" class="filter-in" placeholder="Filter brands…" oninput="filterBrands(this.value)"/>
+    </div>
+    <div class="brand-grid" id="brand-grid">
+      <div class="brand-card" data-brand="nike" onclick="showSection('pg-nike')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_NIKE.svg/320px-Logo_NIKE.svg.png" alt="Nike"/>
+        <div class="brand-label">Nike</div>
+      </div>
+      <div class="brand-card" data-brand="adidas" onclick="showSection('pg-adidas')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/320px-Adidas_Logo.svg.png" alt="Adidas"/>
+        <div class="brand-label">Adidas</div>
+      </div>
+      <div class="brand-card" data-brand="puma" onclick="showSection('pg-puma')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Puma_Logo.svg/320px-Puma_Logo.svg.png" alt="Puma"/>
+        <div class="brand-label">Puma</div>
+      </div>
+      <div class="brand-card" data-brand="converse" onclick="showSection('pg-converse')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Converse_logo.svg/320px-Converse_logo.svg.png" alt="Converse"/>
+        <div class="brand-label">Converse</div>
+      </div>
+    </div>
+    <div style="text-align:center"><button class="back-btn" onclick="showSection('pg-landing')">← Home</button></div>
+  </div>
+</div>
+
+<!-- NIKE -->
+<div id="pg-nike" class="pg">
+  <div class="cat-bg">
+    <div class="sec-hdr"><div class="sec-title"><span>Nike</span> Collection</div><p class="sec-sub">Jordan lineage meets street culture</p></div>
+    <div class="prod-grid" id="grid-nike"></div>
+    <div style="text-align:center"><button class="back-btn" onclick="showSection('pg-brands')">← Brands</button></div>
+  </div>
+</div>
+
+<!-- ADIDAS -->
+<div id="pg-adidas" class="pg">
+  <div class="cat-bg">
+    <div class="sec-hdr"><div class="sec-title"><span>Adidas</span> Collection</div><p class="sec-sub">Heritage meets modern performance</p></div>
+    <div class="prod-grid" id="grid-adidas"></div>
+    <div style="text-align:center"><button class="back-btn" onclick="showSection('pg-brands')">← Brands</button></div>
+  </div>
+</div>
+
+<!-- PUMA -->
+<div id="pg-puma" class="pg">
+  <div class="cat-bg">
+    <div class="sec-hdr"><div class="sec-title"><span>Puma</span> Collection</div><p class="sec-sub">Motorsport soul meets everyday style</p></div>
+    <div class="prod-grid" id="grid-puma"></div>
+    <div style="text-align:center"><button class="back-btn" onclick="showSection('pg-brands')">← Brands</button></div>
+  </div>
+</div>
+
+<!-- CONVERSE -->
+<div id="pg-converse" class="pg">
+  <div class="cat-bg">
+    <div class="sec-hdr"><div class="sec-title"><span>Converse</span> Collection</div><p class="sec-sub">Classic canvas, timeless cool</p></div>
+    <div class="prod-grid" id="grid-converse"></div>
+    <div style="text-align:center"><button class="back-btn" onclick="showSection('pg-brands')">← Brands</button></div>
+  </div>
+</div>
+
+<!-- DETAIL (dynamic) -->
+<div id="pg-detail" class="pg">
+  <div class="det-bg">
+    <div class="det-inner">
+      <h1 class="det-heading" id="det-title"></h1>
+      <div class="car-wrap">
+        <div id="det-car" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner" id="det-car-inner"></div>
+          <a class="carousel-control-prev" href="#det-car" role="button" data-slide="prev"><span class="carousel-control-prev-icon"></span></a>
+          <a class="carousel-control-next" href="#det-car" role="button" data-slide="next"><span class="carousel-control-next-icon"></span></a>
+        </div>
+      </div>
+      <div class="det-info">
+        <h2 id="det-name"></h2>
+        <div class="det-price-val" id="det-price"></div>
+        <p class="tax-note">Inclusive of all taxes and applicable duties.</p>
+        <p class="det-desc" id="det-desc"></p>
+        <div class="sz-label">Select Size (UK)</div>
+        <div class="sizes" id="det-sizes"></div>
+        <div class="qty-row">
+          <div class="qty-lbl">Qty</div>
+          <div class="qty-ctrl">
+            <button onclick="changeQty(-1)">−</button>
+            <div class="qty-num" id="det-qty">1</div>
+            <button onclick="changeQty(1)">+</button>
+          </div>
+        </div>
+        <div class="det-actions">
+          <button class="btn-cart" id="det-cart-btn" onclick="addDetToCart()">Add to Cart 🛒</button>
+          <button class="btn-wish" id="det-wish-btn" onclick="toggleDetWish()">🤍 Wishlist</button>
+        </div>
+      </div>
+      <button class="back-btn" id="det-back">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT -->
+<div id="pg-payment" class="pg">
+  <div class="pay-bg">
+    <div class="pay-wrap">
+      <div class="pay-title">💳 Checkout</div>
+      <div class="pay-grid">
+        <div>
+          <div class="pay-card">
+            <h3>📦 Delivery Information</h3>
+            <div class="pay-row">
+              <div class="pf"><label>First Name</label><input type="text" id="py-fn" placeholder="Irfan"/></div>
+              <div class="pf"><label>Last Name</label><input type="text" id="py-ln" placeholder="Ahmed"/></div>
+            </div>
+            <div class="pf"><label>Email</label><input type="email" id="py-em" placeholder="you@example.com"/></div>
+            <div class="pf"><label>Phone</label><input type="tel" id="py-ph" placeholder="+91 98765 43210"/></div>
+            <div class="pf"><label>Address</label><input type="text" id="py-ad" placeholder="Street, Area, Landmark"/></div>
+            <div class="pay-row">
+              <div class="pf"><label>City</label><input type="text" id="py-ct" placeholder="Hyderabad"/></div>
+              <div class="pf"><label>Pincode</label><input type="text" id="py-pn" placeholder="500001" maxlength="6"/></div>
+            </div>
+          </div>
+          <div class="pay-card">
+            <h3>💳 Payment Method</h3>
+            <div class="pay-tabs">
+              <div class="pay-tab active" onclick="switchPayTab(this,'pf-card')">💳 Card</div>
+              <div class="pay-tab" onclick="switchPayTab(this,'pf-upi')">📱 UPI</div>
+              <div class="pay-tab" onclick="switchPayTab(this,'pf-net')">🏦 Net Banking</div>
+              <div class="pay-tab" onclick="switchPayTab(this,'pf-cod')">📦 COD</div>
+            </div>
+            <!-- Card -->
+            <div id="pf-card">
+              <div class="pf"><label>Card Number</label><input type="text" id="py-cn" placeholder="1234 5678 9012 3456" maxlength="19" oninput="fmtCard(this)"/></div>
+              <div class="pay-row">
+                <div class="pf"><label>Expiry</label><input type="text" id="py-ex" placeholder="MM/YY" maxlength="5" oninput="fmtExp(this)"/></div>
+                <div class="pf"><label>CVV</label><input type="password" id="py-cv" placeholder="•••" maxlength="3"/></div>
+              </div>
+              <div class="pf"><label>Name on Card</label><input type="text" id="py-nm" placeholder="IRFAN AHMED" style="text-transform:uppercase"/></div>
+            </div>
+            <!-- UPI -->
+            <div id="pf-upi" style="display:none">
+              <div class="upi-apps">
+                <div class="upi-app" onclick="selUpi(this)"><div class="icon">📗</div>GPay</div>
+                <div class="upi-app" onclick="selUpi(this)"><div class="icon">💜</div>PhonePe</div>
+                <div class="upi-app" onclick="selUpi(this)"><div class="icon">🔵</div>Paytm</div>
+                <div class="upi-app" onclick="selUpi(this)"><div class="icon">🟠</div>BHIM</div>
+              </div>
+              <div class="pf"><label>UPI ID</label><input type="text" id="py-upi" placeholder="yourname@upi"/></div>
+            </div>
+            <!-- Net Banking -->
+            <div id="pf-net" style="display:none">
+              <div class="net-banks">
+                <div class="net-bank" onclick="selBank(this)">SBI</div>
+                <div class="net-bank" onclick="selBank(this)">HDFC</div>
+                <div class="net-bank" onclick="selBank(this)">ICICI</div>
+                <div class="net-bank" onclick="selBank(this)">Axis Bank</div>
+                <div class="net-bank" onclick="selBank(this)">Kotak</div>
+                <div class="net-bank" onclick="selBank(this)">PNB</div>
+              </div>
+            </div>
+            <!-- COD -->
+            <div id="pf-cod" style="display:none">
+              <div style="background:#191919;border-radius:9px;padding:14px;color:#777;font-size:13px;line-height:1.7">
+                💵 Pay cash when your order arrives.<br>
+                Additional <strong style="color:#e63232">₹49 COD fee</strong> applies.
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ORDER SUMMARY -->
+        <div>
+          <div class="pay-card ord-sum">
+            <h3>🧾 Order Summary</h3>
+            <div id="pay-items"></div>
+            <div class="si"><span>Subtotal</span><span id="pay-sub">₹0</span></div>
+            <div class="si"><span>Shipping</span><span style="color:#22c55e">FREE</span></div>
+            <div class="si"><span>GST (18%)</span><span id="pay-gst">₹0</span></div>
+            <div class="si" id="cod-fee-row" style="display:none"><span>COD Fee</span><span>₹49</span></div>
+            <div class="si tot"><span>Grand Total</span><span id="pay-grand">₹0</span></div>
+            <button class="pay-now" id="pay-now-btn" onclick="placeOrder()">Pay Now →</button>
+            <div class="secure-note">🔒 256-bit SSL secured</div>
+          </div>
+        </div>
+      </div>
+      <button class="back-btn" onclick="closeCartPanel();showSection('pg-brands')">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div id="pg-success" class="pg-flex">
+  <div class="suc-box">
+    <div class="suc-icon">🎉</div>
+    <h2>Order Placed!</h2>
+    <p>Thank you for shopping with 10KICKS.</p>
+    <p>Your sneakers are on their way! 👟</p>
+    <div class="ord-id" id="ord-id"></div>
+    <br>
+    <button class="cont-btn" onclick="clearAndShop()">Continue Shopping</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="site-footer">
+  <div class="ft-brand">10<span>KICKS</span></div>
+  <p style="margin-top:5px">The premium sneaker catalogue — curated by Irfan, Jaswanth &amp; Dinesh.</p>
+  <p style="margin-top:8px">© 2025 10KICKS. All rights reserved.</p>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script>
+'use strict';
+
+/* ── PRODUCT DATA ──────────────────────────────────────── */
+const DB = {
+  nike:[
+    {id:'nk1',name:'AIR JORDAN 1 LOW',price:8295,back:'pg-nike',
+     img:'https://i.postimg.cc/KcTFybzS/image-removebg-preview.png',
+     imgs:[
+       'https://i.postimg.cc/KcTFybzS/image-removebg-preview.png',
+       'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/999db6cf-d99b-4101-8d28-d1a9da898ddc/AIR+JORDAN+1+LOW.png',
+       'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/12f5d8b1-e4c0-4a0e-a49c-f5233409a9bc/AIR+JORDAN+1+LOW.png'
+     ],
+     desc:'Lightweight, versatile, and built for all-day comfort. The Air Jordan 1 Low brings iconic Jordan style in a sleek low-cut silhouette perfect for everyday wear.'},
+    {id:'nk2',name:'AIR JORDAN 1 Retro High OG',price:16995,back:'pg-nike',
+     img:'https://i.postimg.cc/Pq6nwNBK/AIR-JORDAN-1-RETRO-HIGH-OG-removebg-preview.png',
+     imgs:[
+       'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/5c46baf6-cbcf-48cf-a2a8-f8f2e7f84e38/AIR+JORDAN+1+RETRO+HIGH+OG.png',
+       'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/d14fd3f4-236c-436f-934c-6a7d0d4a57f4/AIR+JORDAN+1+RETRO+HIGH+OG.png',
+       'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/e65dd64d-6a0a-4f4d-9227-840a89d9145a/AIR+JORDAN+1+RETRO+HIGH+OG.png',
+       'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/8c4b6996-8376-4911-8e04-5b42d462e73e/AIR+JORDAN+1+RETRO+HIGH+OG.png',
+       'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/3427ae48-beb6-4661-8002-3cef3309c7e5/AIR+JORDAN+1+RETRO+HIGH+OG.png'
+     ],
+     desc:'"Shattered Backboard" edition. Premium leather upper, Air-Sole cushioning, and the iconic Wings logo — a true grail for collectors and sneaker culture.'},
+    {id:'nk3',name:'AIR JORDAN 1 RETRO',price:16995,back:'pg-nike',
+     img:'https://i.postimg.cc/YqxgYHCj/AIR-JORDAN-1-HIGH-G-removebg-preview.png',
+     imgs:[
+       'https://i.postimg.cc/YqxgYHCj/AIR-JORDAN-1-HIGH-G-removebg-preview.png',
+       'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/5c46baf6-cbcf-48cf-a2a8-f8f2e7f84e38/AIR+JORDAN+1+RETRO+HIGH+OG.png'
+     ],
+     desc:'The classic Air Jordan 1 Retro in a timeless colourway. Court-ready style with premium materials and Air-Sole cushioning for all-day wear.'},
+    {id:'nk4',name:'AIR JORDAN 1 LOW SE',price:8695,back:'pg-nike',
+     img:'https://i.postimg.cc/FH8KJWcC/AIR-JORDAN-1-LOW-GS-removebg-preview.png',
+     imgs:[
+       'https://i.postimg.cc/FH8KJWcC/AIR-JORDAN-1-LOW-GS-removebg-preview.png',
+       'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/999db6cf-d99b-4101-8d28-d1a9da898ddc/AIR+JORDAN+1+LOW.png'
+     ],
+     desc:'Special Edition Air Jordan 1 Low with premium detailing, unique colourway, and elevated materials. Every inch crafted for the discerning collector.'},
+    {id:'nk5',name:'AIR JORDAN 1 MID',price:11495,back:'pg-nike',
+     img:'https://i.postimg.cc/kGgCHKKh/WMNS-AIR-JORDAN-1-MID-removebg-preview.png',
+     imgs:[
+       'https://i.postimg.cc/kGgCHKKh/WMNS-AIR-JORDAN-1-MID-removebg-preview.png',
+       'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/d14fd3f4-236c-436f-934c-6a7d0d4a57f4/AIR+JORDAN+1+RETRO+HIGH+OG.png'
+     ],
+     desc:'The Jordan 1 Mid sits perfectly between the High and Low — ideal ankle support meets flexible street style in one iconic silhouette.'},
+    {id:'nk6',name:'AIR JORDAN 1 LOW SE GS',price:8965,back:'pg-nike',
+     img:'https://i.postimg.cc/9Xns26hM/AIR-JORDAN-1-LOW-SE-GS-removebg-preview.png',
+     imgs:[
+       'https://i.postimg.cc/9Xns26hM/AIR-JORDAN-1-LOW-SE-GS-removebg-preview.png',
+       'https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/e65dd64d-6a0a-4f4d-9227-840a89d9145a/AIR+JORDAN+1+RETRO+HIGH+OG.png'
+     ],
+     desc:'Grade School sizing meets iconic Jordan style. The same Air Jordan 1 Low SE look and feel, sized for younger sneakerheads ready to ball.'},
+  ],
+  adidas:[
+    {id:'ad1',name:'Breaknet 2.0 Shoes',price:4199,back:'pg-adidas',
+     img:'https://i.postimg.cc/MGh2Dgp6/Breaknet-2-0-Shoes-White-IE5251-01-standard-removebg-preview.png',
+     imgs:[
+       'https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/8754c5912ff1482ba6cb5f8aa7b61643_9366/Breaknet_2.0_Shoes_White_IE5251_01_standard.jpg',
+       'https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/0271f1c6aeb14ec5bad80cca75275fb5_9366/Breaknet_2.0_Shoes_White_IE5251_02_standard_hover.jpg',
+       'https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/9d1eb4aaf69f4d09aeec4b296552e668_9366/Breaknet_2.0_Shoes_White_IE5251_03_standard.jpg',
+       'https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/82e3d1ad80dc4b04b4cb5b7ae9f4fd1f_9366/Breaknet_2.0_Shoes_White_IE5251_04_standard.jpg',
+       'https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/964d9e86789742109d9e9f499221e56e_9366/Breaknet_2.0_Shoes_White_IE5251_05_standard.jpg'
+     ],
+     desc:'A classic court-inspired sneaker blending heritage style with modern comfort. Clean white upper, breathable design, and durable rubber outsole for everyday wear.'},
+    {id:'ad2',name:'SL 72 RS Shoes',price:7999,back:'pg-adidas',
+     img:'https://i.postimg.cc/Qd9fbC9X/SL-72-RS-Shoes-Blue-IG2132-01-standard-removebg-preview.png',
+     imgs:[
+       'https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/e7d955c4f1fa4f179a4e8308ea7ca8fc_9366/SL_72_RS_Shoes_Blue_IG2132_01_standard.jpg',
+       'https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/6946b97b63ad440cba1a23f8350c5de5_9366/SL_72_RS_Shoes_Blue_IG2132_09_standard.jpg',
+       'https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/bad9647ac68648c193681dac9a9f3475_9366/SL_72_RS_Shoes_Blue_IG2132_02_standard_hover.jpg',
+       'https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/5bd43a14c5b94883998709755148f692_9366/SL_72_RS_Shoes_Blue_IG2132_03_standard.jpg',
+       'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/8ca87e3d28954c10b31f027da3d26d24_9366/SL_72_RS_Shoes_Blue_IG2132_04_standard.jpg'
+     ],
+     desc:'A reimagined classic — lightweight, breathable, and built for timeless style. Retro 70s heritage fused with modern comfort technology.'},
+    {id:'ad3',name:'Yard Cricket Shoes',price:4299,back:'pg-adidas',
+     img:'https://i.postimg.cc/nrWvjK1N/Yard-Cricket-Shoes-White-JK7457-01-00-standard-removebg-preview.png',
+     imgs:[
+       'https://i.postimg.cc/nrWvjK1N/Yard-Cricket-Shoes-White-JK7457-01-00-standard-removebg-preview.png'
+     ],
+     desc:'Engineered for the crease. Lightweight, stable cricket shoes with specialized outsole traction designed for all pitch conditions.'},
+    {id:'ad4',name:'Adidas RUN 70s',price:3500,back:'pg-adidas',
+     img:'https://i.postimg.cc/8zQ62zX6/Run-70s-Lifestyle-Running-Shoes-Black-GX3090-01-00-standard-removebg-preview.png',
+     imgs:[
+       'https://i.postimg.cc/8zQ62zX6/Run-70s-Lifestyle-Running-Shoes-Black-GX3090-01-00-standard-removebg-preview.png'
+     ],
+     desc:'70s-inspired running silhouette. Breathable mesh upper with retro styling and EVA midsole cushioning for comfortable everyday wear.'},
+    {id:'ad5',name:'Adidas Samba OG',price:10999,back:'pg-adidas',
+     img:'https://i.postimg.cc/GhYQ8NZS/473Wx593H-469581953-purple-MODEL-removebg-preview.png',
+     imgs:[
+       'https://i.postimg.cc/GhYQ8NZS/473Wx593H-469581953-purple-MODEL-removebg-preview.png'
+     ],
+     desc:'The Samba is a football-turned-fashion icon. Supple leather upper, gum outsole, and terrace-ready aesthetics that never go out of style.'},
+    {id:'ad6',name:'Adidas Retropy F2',price:5789,back:'pg-adidas',
+     img:'https://i.postimg.cc/hPj0Mvzp/Retropy-F2-Shoes-Black-IF2877-01-standard-removebg-preview.png',
+     imgs:[
+       'https://i.postimg.cc/hPj0Mvzp/Retropy-F2-Shoes-Black-IF2877-01-standard-removebg-preview.png'
+     ],
+     desc:'Retro-inspired running silhouette with modern materials. Lightweight, durable, and dripping in archive energy from the 80s.'},
+  ],
+  puma:[
+    {id:'pm1',name:'Puma Palermo Sneakers',price:6999,back:'pg-puma',
+     img:'https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_750,h_750/global/402692/05/sv01/fnd/IND/fmt/png/Palermo-Sneakers',
+     imgs:[
+       'https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_750,h_750/global/402692/05/sv01/fnd/IND/fmt/png/Palermo-Sneakers',
+       'https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_750,h_750/global/402692/05/fnd/IND/fmt/png/Palermo-Sneakers',
+       'https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_750,h_750/global/402692/05/sv02/fnd/IND/fmt/png/Palermo-Sneakers',
+       'https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_750,h_750/global/402692/05/sv03/fnd/IND/fmt/png/Palermo-Sneakers',
+       'https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_750,h_750/global/402692/05/sv04/fnd/IND/fmt/png/Palermo-Sneakers'
+     ],
+     desc:'A classic terrace shoe from the PUMA archives. Vintage silhouette, premium materials, timeless style straight from the Palermo streets.'},
+    {id:'pm2',name:'Puma Speedcat OG',price:10999,back:'pg-puma',
+     img:'https://images.puma.com/image/upload/f_auto%2Cq_auto%2Cb_rgb%3Afafafa%2Cw_2000%2Ch_2000/global/398846/02/sv01/fnd/IND/fmt/png/Speedcat-OG-Sneakers',
+     imgs:[
+       'https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_750,h_750/global/398846/02/fnd/IND/fmt/png/Speedcat-OG-Sneakers',
+       'https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_750,h_750/global/398846/02/sv02/fnd/IND/fmt/png/Speedcat-OG-Sneakers',
+       'https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_750,h_750/global/398846/02/sv04/fnd/IND/fmt/png/Speedcat-OG-Sneakers',
+       'https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_750,h_750/global/398846/02/sv03/fnd/IND/fmt/png/Speedcat-OG-Sneakers',
+       'https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_750,h_750/global/398846/02/sv01/fnd/IND/fmt/png/Speedcat-OG-Sneakers'
+     ],
+     desc:'Inspired by motorsport heritage — sleek, low-profile, built for style and comfort. The Speedcat OG brings racing DNA to your daily rotation.'},
+    {id:'pm3',name:'Puma Softride Frequence',price:7999,back:'pg-puma',
+     img:'https://images.puma.com/image/upload/f_auto%2Cq_auto%2Cb_rgb%3Afafafa%2Cw_2000%2Ch_2000/global/311767/01/sv01/fnd/IND/fmt/png/Galaxis-Pro-Men%27s-Performance-Boost-Running-Shoes',
+     imgs:[
+       'https://images.puma.com/image/upload/f_auto%2Cq_auto%2Cb_rgb%3Afafafa%2Cw_2000%2Ch_2000/global/311767/01/sv01/fnd/IND/fmt/png/Galaxis-Pro-Men%27s-Performance-Boost-Running-Shoes'
+     ],
+     desc:'Next-gen SOFTRIDE cushioning meets modern knit upper. Responsive, lightweight, and engineered for long-distance comfort.'},
+    {id:'pm4',name:'Puma Deviate NITRO 3 Max',price:15990,back:'pg-puma',
+     img:'https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_750,h_750/global/309867/01/fnd/IND/fmt/png/Deviate-NITRO-3-Max-Men%27s-Running-Shoes',
+     imgs:[
+       'https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_750,h_750/global/309867/01/fnd/IND/fmt/png/Deviate-NITRO-3-Max-Men%27s-Running-Shoes'
+     ],
+     desc:'NITRO foam technology in its purest form. Engineered for runners demanding maximum energy return and performance over every mile.'},
+    {id:'pm5',name:'Puma Galaxis Pro',price:7999,back:'pg-puma',
+     img:'https://www.superkicks.in/cdn/shop/files/1_2b302580-2cb5-49ac-a2e0-cfe3f230e717.jpg?v=1724140458&width=1946',
+     imgs:[
+       'https://www.superkicks.in/cdn/shop/files/1_2b302580-2cb5-49ac-a2e0-cfe3f230e717.jpg?v=1724140458&width=1946'
+     ],
+     desc:'Performance-meets-lifestyle silhouette from Puma. Lightweight construction, cushioned midsole, and a bold colourway built for the streets.'},
+    {id:'pm6',name:'Puma SOFTRIDE Vital',price:4999,back:'pg-puma',
+     img:'https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_750,h_750/global/377048/01/fnd/IND/fmt/png/SOFTRIDE-Vital-Men%27s-Sneakers',
+     imgs:[
+       'https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_750,h_750/global/377048/01/fnd/IND/fmt/png/SOFTRIDE-Vital-Men%27s-Sneakers'
+     ],
+     desc:'Everyday comfort meets street-ready style. The SOFTRIDE Vital is your all-day companion for comfort without compromise.'},
+  ],
+  converse:[
+    {id:'cv1',name:'CONS Chuck Taylor All Star Pro Suede',price:5999,back:'pg-converse',
+     img:'https://converse.static.n7.io/media/catalog/product/a/1/a12919c_a_107x1-web.jpg',
+     imgs:[
+       'https://converse.static.n7.io/media/catalog/product/a/1/a12919c_a_107x1-web.jpg',
+       'https://converse.static.n7.io/media/catalog/product/a/1/a12919c_e_107x1-webjpg42.jpg',
+       'https://converse.static.n7.io/media/catalog/product/a/1/a12919c_c_107x1-webjpg40.jpg',
+       'https://converse.static.n7.io/media/catalog/product/a/1/a12919c_d_107x1-webjpg41.jpg',
+       'https://converse.static.n7.io/media/catalog/product/a/1/a12919c_b_107x1-webjpg39.jpg'
+     ],
+     desc:'A high-top Chuck Taylor in light blue suede — skateboarding DNA meets everyday wearability. Premium suede upper with classic Converse styling.'},
+    {id:'cv2',name:'Chuck 70 High-Top',price:6399,back:'pg-converse',
+     img:'https://converse.static.n7.io/media/catalog/product/a/1/a13331c_a_107x1-web.jpg',
+     imgs:[
+       'https://converse.static.n7.io/media/catalog/product/a/1/a13331c_a_107x1-web.jpg',
+       'https://converse.static.n7.io/media/catalog/product/a/1/a13331c_e_107x1-webjpg252.jpg',
+       'https://converse.static.n7.io/media/catalog/product/a/1/a13331c_c_107x1-webjpg250.jpg',
+       'https://converse.static.n7.io/media/catalog/product/a/1/a13331c_d_107x1-webjpg251.jpg',
+       'https://converse.static.n7.io/media/catalog/product/a/1/a13331c_b_107x1-webjpg249.jpg'
+     ],
+     desc:'The Chuck 70 elevates the classic with premium canvas, extra cushioning, and period-correct details that pop in any fit.'},
+    {id:'cv3',name:'Run Star Hike Platform',price:6299,back:'pg-converse',
+     img:'https://converse.static.n7.io/media/catalog/product/a/1/a12598c_a_107x1_1_1.jpg',
+     imgs:[
+       'https://converse.static.n7.io/media/catalog/product/a/1/a12598c_a_107x1_1_1.jpg'
+     ],
+     desc:'Bold platform silhouette with jagged midsole. Where hiking boot meets Chuck Taylor — a fashion-forward statement shoe.'},
+    {id:'cv4',name:'Star Player 76 Suede',price:7499,back:'pg-converse',
+     img:'https://converse.static.n7.io/media/catalog/product/a/1/a12712c_a_107x1_1.jpg',
+     imgs:[
+       'https://converse.static.n7.io/media/catalog/product/a/1/a12712c_a_107x1_1.jpg'
+     ],
+     desc:'Archive basketball silhouette reborn in premium suede. Clean court-ready lines, heritage detailing, and refined materials.'},
+    {id:'cv5',name:'Converse Weapon',price:8999,back:'pg-converse',
+     img:'https://converse.static.n7.io/media/catalog/product/a/1/a10597c_a_107x1_1.jpg',
+     imgs:[
+       'https://converse.static.n7.io/media/catalog/product/a/1/a10597c_a_107x1_1.jpg'
+     ],
+     desc:'The legendary Weapon returns. Originally designed for NBA superstars — an iconic high-top silhouette with premium court-ready finish.'},
+    {id:'cv6',name:'Chuck 70 Classic',price:6999,back:'pg-converse',
+     img:'https://converse.static.n7.io/media/catalog/product/a/0/a09450c_a_107x1_white363.jpg',
+     imgs:[
+       'https://converse.static.n7.io/media/catalog/product/a/0/a09450c_a_107x1_white363.jpg'
+     ],
+     desc:'The OG Chuck 70 in classic white. Rubber toe cap, premium canvas upper, superior cushioning — as iconic as it has ever been.'},
+  ]
+};
+
+const SIZES = [6,7,7.5,8,8.5,9,9.5,10,11,12];
+
+/* ── STATE ────────────────────────────────────────────── */
+let cart     = [];   // {key,id,name,price,img,size,qty}
+let wishlist = [];   // {id,name,price,img}
+let users    = {};   // email -> {name,pass}
+let currentUser = null;
+let curProd  = null;
+let detQty   = 1;
+let activePayEl = null;
+let toastTmr = null;
+
+/* ── HELPER: find product ─────────────────────────────── */
+function findP(id){
+  for(const arr of Object.values(DB)){const p=arr.find(x=>x.id===id);if(p)return p;}
+  return null;
+}
+
+/* ── SECTION NAVIGATION ───────────────────────────────── */
+function showSection(id){
+  // hide all
+  document.querySelectorAll('.pg, .pg-flex').forEach(el=>{
+    el.classList.remove('active');
+    el.style.display='none';
+  });
+  const el=document.getElementById(id);
+  if(!el)return;
+  const flexIds=['pg-login','pg-success'];
+  el.style.display = flexIds.includes(id)?'flex':'block';
+  el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  const noChrome=['pg-landing','pg-login','pg-success'];
+  const hdr=document.getElementById('main-header');
+  const ftr=document.getElementById('site-footer');
+  hdr.style.display = noChrome.includes(id)?'none':'flex';
+  ftr.style.display = noChrome.includes(id)?'none':'block';
+}
+
+function goTo(id){showSection(id);closeMob();}
+
+/* ── BUILD PRODUCT GRIDS ──────────────────────────────── */
+function buildGrid(brand){
+  const el=document.getElementById('grid-'+brand);
+  if(!el)return;
+  el.innerHTML=DB[brand].map(p=>{
+    const inW=wishlist.some(w=>w.id===p.id);
+    return `<div class="prod-card" onclick="openDetail('${p.id}')">
+      <button class="heart-btn${inW?' on':''}" id="hb-${p.id}"
+        onclick="event.stopPropagation();toggleWish('${p.id}')"
+        title="Wishlist">${inW?'❤️':'🤍'}</button>
+      <img class="prod-thumb" src="${p.img}" alt="${p.name}"
+        onerror="this.src='https://placehold.co/180x170/1c1c1c/555?text=No+Image'"/>
+      <div class="prod-cbody">
+        <h3>${p.name}</h3>
+        <div class="prod-prc">₹${p.price.toLocaleString('en-IN')}</div>
+      </div>
+      <div class="quick-add" onclick="event.stopPropagation();quickAdd('${p.id}')">+ Quick Add to Cart</div>
+    </div>`;
+  }).join('');
+}
+Object.keys(DB).forEach(buildGrid);
+
+/* ── DETAIL PAGE ──────────────────────────────────────── */
+function openDetail(id){
+  const p=findP(id);
+  if(!p)return;
+  curProd=p; detQty=1;
+  document.getElementById('det-title').textContent=p.name;
+  document.getElementById('det-name').textContent=p.name;
+  document.getElementById('det-price').textContent='₹'+p.price.toLocaleString('en-IN');
+  document.getElementById('det-desc').textContent=p.desc;
+  document.getElementById('det-qty').textContent='1';
+  // carousel
+  document.getElementById('det-car-inner').innerHTML=
+    p.imgs.map((src,i)=>`<div class="carousel-item${i===0?' active':''}"><img src="${src}" alt="${p.name}" onerror="this.src='https://placehold.co/600x390/f5f5f5/999?text=Image'"/></div>`).join('');
+  // restart carousel
+  try{$('#det-car').carousel(0);}catch(e){}
+  // sizes
+  document.getElementById('det-sizes').innerHTML=
+    SIZES.map(s=>`<button class="sz" onclick="selSz(this)" data-sz="${s}">${s}</button>`).join('');
+  // wish btn
+  const inW=wishlist.some(w=>w.id===p.id);
+  document.getElementById('det-wish-btn').innerHTML=inW?'❤️ Wishlisted':'🤍 Wishlist';
+  // back
+  document.getElementById('det-back').onclick=()=>showSection(p.back);
+  showSection('pg-detail');
+}
+
+function selSz(btn){
+  document.querySelectorAll('#det-sizes .sz').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function changeQty(d){
+  detQty=Math.min(10,Math.max(1,detQty+d));
+  document.getElementById('det-qty').textContent=detQty;
+}
+
+function addDetToCart(){
+  if(!curProd)return;
+  const szEl=document.querySelector('#det-sizes .sz.sel');
+  const sz=szEl?szEl.dataset.sz:'One Size';
+  addToCart(curProd.id,sz,detQty);
+  // feedback on button
+  const btn=document.getElementById('det-cart-btn');
+  btn.textContent='✅ Added!';
+  btn.style.background='#16a34a';
+  setTimeout(()=>{btn.textContent='Add to Cart 🛒';btn.style.background='';},1600);
+}
+
+function quickAdd(id){addToCart(id,'One Size',1);}
+
+function toggleDetWish(){
+  if(!curProd)return;
+  toggleWish(curProd.id);
+  const inW=wishlist.some(w=>w.id===curProd.id);
+  document.getElementById('det-wish-btn').innerHTML=inW?'❤️ Wishlisted':'🤍 Wishlist';
+}
+
+/* ── CART ─────────────────────────────────────────────── */
+function addToCart(id,size,qty){
+  const p=findP(id);if(!p)return;
+  const key=id+'_'+size;
+  const ex=cart.find(c=>c.key===key);
+  if(ex){ex.qty=Math.min(10,ex.qty+qty);}
+  else{cart.push({key,id,name:p.name,price:p.price,img:p.img,size,qty});}
+  updateCartBadge();
+  renderCart();
+  showToast('🛒 '+p.name.split(' ').slice(0,3).join(' ')+' added!');
+  // bounce cart icon
+  const cnt=document.getElementById('cart-cnt');
+  cnt.style.transform='scale(1.6)';
+  setTimeout(()=>cnt.style.transform='',300);
+}
+
+function removeFromCart(key){
+  cart=cart.filter(c=>c.key!==key);
+  updateCartBadge();renderCart();
+}
+
+function changeCartQty(key,d){
+  const it=cart.find(c=>c.key===key);
+  if(!it)return;
+  it.qty=Math.min(10,Math.max(1,it.qty+d));
+  updateCartBadge();renderCart();
+}
+
+function updateCartBadge(){
+  const n=cart.reduce((s,c)=>s+c.qty,0);
+  const el=document.getElementById('cart-cnt');
+  el.textContent=n;
+  el.classList.toggle('show',n>0);
+  document.getElementById('chk-btn').disabled=cart.length===0;
+}
+
+function renderCart(){
+  const body=document.getElementById('cart-body');
+  if(cart.length===0){
+    body.innerHTML='<div class="empty-msg">Your cart is empty.<br>Add some kicks! 👟</div>';
+    document.getElementById('cart-total').textContent='₹0';
+    return;
+  }
+  body.innerHTML=cart.map(c=>`
+    <div class="cart-item">
+      <img src="${c.img}" alt="${c.name}" onerror="this.src='https://placehold.co/60x60/f5f5f5/999?text=Img'"/>
+      <div class="ci-info">
+        <div class="ci-name">${c.name}</div>
+        <div class="ci-sub">Size: UK ${c.size}</div>
+        <div class="ci-price">₹${(c.price*c.qty).toLocaleString('en-IN')}</div>
+        <div class="cart-qty">
+          <button class="cqb" onclick="changeCartQty('${c.key}',-1)">−</button>
+          <span class="cqn">${c.qty}</span>
+          <button class="cqb" onclick="changeCartQty('${c.key}',1)">+</button>
+        </div>
+      </div>
+      <button class="rm-btn" onclick="removeFromCart('${c.key}')" title="Remove">×</button>
+    </div>`).join('');
+  const tot=cart.reduce((s,c)=>s+c.price*c.qty,0);
+  document.getElementById('cart-total').textContent='₹'+tot.toLocaleString('en-IN');
+}
+
+function openCartPanel(){document.getElementById('cart-overlay').classList.add('show');renderCart();}
+function closeCartPanel(){document.getElementById('cart-overlay').classList.remove('show');}
+function closePanelBg(e,id){if(e.target===document.getElementById(id))document.getElementById(id).classList.remove('show');}
+
+/* ── WISHLIST ─────────────────────────────────────────── */
+function toggleWish(id){
+  const p=findP(id);if(!p)return;
+  const idx=wishlist.findIndex(w=>w.id===id);
+  if(idx>-1){wishlist.splice(idx,1);showToast('Removed from wishlist');}
+  else{wishlist.push({id,name:p.name,price:p.price,img:p.img});showToast('❤️ Saved to wishlist!');}
+  // update heart btns in all grids
+  const hb=document.getElementById('hb-'+id);
+  if(hb){const on=wishlist.some(w=>w.id===id);hb.textContent=on?'❤️':'🤍';hb.classList.toggle('on',on);}
+  updateWishBadge();
+  renderWishlist();
+}
+
+function updateWishBadge(){
+  const el=document.getElementById('wish-cnt');
+  el.textContent=wishlist.length;
+  el.classList.toggle('show',wishlist.length>0);
+}
+
+function renderWishlist(){
+  const body=document.getElementById('wish-body');
+  if(wishlist.length===0){body.innerHTML='<div class="empty-msg">Your wishlist is empty.<br>Heart a shoe to save it! 🤍</div>';return;}
+  body.innerHTML=wishlist.map(w=>`
+    <div class="wish-item">
+      <img src="${w.img}" alt="${w.name}" onerror="this.src='https://placehold.co/54x54/f5f5f5/999?text=Img'"/>
+      <div class="wi-info">
+        <div class="wi-name">${w.name}</div>
+        <div class="wi-price">₹${w.price.toLocaleString('en-IN')}</div>
+        <button class="wi-cart-btn" onclick="moveWish('${w.id}')">Move to Cart</button>
+      </div>
+      <button class="rm-btn" onclick="toggleWish('${w.id}')" title="Remove">×</button>
+    </div>`).join('');
+}
+
+function moveWish(id){addToCart(id,'One Size',1);toggleWish(id);renderWishlist();closeWishPanel();openCartPanel();}
+function moveAllWish(){[...wishlist].forEach(w=>{addToCart(w.id,'One Size',1);toggleWish(w.id);});renderWishlist();closeWishPanel();openCartPanel();}
+function openWishPanel(){document.getElementById('wish-overlay').classList.add('show');renderWishlist();}
+function closeWishPanel(){document.getElementById('wish-overlay').classList.remove('show');}
+
+/* ── AUTH ─────────────────────────────────────────────── */
+function switchTab(t){
+  document.getElementById('tab-in').classList.toggle('active',t==='in');
+  document.getElementById('tab-up').classList.toggle('active',t==='up');
+  document.getElementById('form-in').style.display=t==='in'?'block':'none';
+  document.getElementById('form-up').style.display=t==='up'?'block':'none';
+  document.getElementById('auth-err').classList.remove('show');
+}
+function showErr(msg){const e=document.getElementById('auth-err');e.textContent=msg;e.classList.add('show');}
+function doLogin(){
+  const em=document.getElementById('in-email').value.trim();
+  const pw=document.getElementById('in-pass').value;
+  if(!em||!pw){showErr('Please fill in all fields.');return;}
+  if(!users[em]){showErr('No account found. Please sign up.');return;}
+  if(users[em].pass!==pw){showErr('Incorrect password. Try again.');return;}
+  loginOK(users[em].name,em);
+}
+function doSignup(){
+  const nm=document.getElementById('up-name').value.trim();
+  const em=document.getElementById('up-email').value.trim();
+  const pw=document.getElementById('up-pass').value;
+  if(!nm||!em||!pw){showErr('Please fill in all fields.');return;}
+  if(!/\S+@\S+\.\S+/.test(em)){showErr('Enter a valid email address.');return;}
+  if(pw.length<6){showErr('Password must be at least 6 characters.');return;}
+  if(users[em]){showErr('Account already exists. Sign in instead.');return;}
+  users[em]={name:nm,pass:pw};
+  loginOK(nm,em);
+}
+function guestLogin(){loginOK('Guest',null);}
+function loginOK(name,email){
+  currentUser={name,email};
+  document.getElementById('btn-login').style.display='none';
+  document.getElementById('btn-user').style.display='inline-block';
+  document.getElementById('btn-user').textContent='👤 '+name.split(' ')[0];
+  showToast('Welcome, '+name.split(' ')[0]+'! 👋');
+  showSection('pg-brands');
+}
+function handleUserBtn(){
+  if(confirm('Sign out of 10KICKS?')){
+    currentUser=null;
+    document.getElementById('btn-login').style.display='inline-block';
+    document.getElementById('btn-user').style.display='none';
+    showToast('Signed out. See you soon!');
+  }
+}
+
+/* ── ABOUT ────────────────────────────────────────────── */
+function openAbout(){document.getElementById('about-overlay').classList.add('show');}
+function closeAbout(){document.getElementById('about-overlay').classList.remove('show');}
+function closeAboutOnBg(e){if(e.target===document.getElementById('about-overlay'))closeAbout();}
+
+/* ── PAYMENT ──────────────────────────────────────────── */
+let isCOD=false;
+function goCheckout(){
+  if(cart.length===0){showToast('Your cart is empty!');return;}
+  closeCartPanel();
+  if(currentUser&&currentUser.email)document.getElementById('py-em').value=currentUser.email;
+  renderPaySummary();
+  showSection('pg-payment');
+}
+
+function renderPaySummary(){
+  const items=document.getElementById('pay-items');
+  items.innerHTML=cart.map(c=>`
+    <div class="si"><span>${c.name.split(' ').slice(0,4).join(' ')} ×${c.qty}</span>
+    <span>₹${(c.price*c.qty).toLocaleString('en-IN')}</span></div>`).join('');
+  const sub=cart.reduce((s,c)=>s+c.price*c.qty,0);
+  const gst=Math.round(sub*0.18);
+  const cod=isCOD?49:0;
+  const grand=sub+gst+cod;
+  document.getElementById('pay-sub').textContent='₹'+sub.toLocaleString('en-IN');
+  document.getElementById('pay-gst').textContent='₹'+gst.toLocaleString('en-IN');
+  document.getElementById('pay-grand').textContent='₹'+grand.toLocaleString('en-IN');
+  document.getElementById('cod-fee-row').style.display=isCOD?'flex':'none';
+}
+
+function switchPayTab(el,formId){
+  document.querySelectorAll('.pay-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  ['pf-card','pf-upi','pf-net','pf-cod'].forEach(id=>{
+    document.getElementById(id).style.display=id===formId?'block':'none';
+  });
+  isCOD=formId==='pf-cod';
+  renderPaySummary();
+}
+
+function selUpi(el){document.querySelectorAll('.upi-app').forEach(a=>a.classList.remove('sel'));el.classList.add('sel');}
+function selBank(el){document.querySelectorAll('.net-bank').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');}
+function fmtCard(inp){let v=inp.value.replace(/\D/g,'').slice(0,16);inp.value=v.match(/.{1,4}/g)?.join(' ')||v;}
+function fmtExp(inp){let v=inp.value.replace(/\D/g,'').slice(0,4);if(v.length>=3)v=v.slice(0,2)+'/'+v.slice(2);inp.value=v;}
+
+function placeOrder(){
+  const fn=document.getElementById('py-fn').value.trim();
+  const ad=document.getElementById('py-ad').value.trim();
+  const ph=document.getElementById('py-ph').value.trim();
+  if(!fn||!ad||!ph){showToast('⚠️ Fill in all delivery details.');return;}
+  // Card validation
+  const cardForm=document.getElementById('pf-card');
+  if(cardForm.style.display!=='none'){
+    const cn=document.getElementById('py-cn').value.replace(/\s/g,'');
+    const cv=document.getElementById('py-cv').value;
+    if(cn.length<16){showToast('⚠️ Enter a valid 16-digit card number.');return;}
+    if(cv.length<3){showToast('⚠️ Enter a valid CVV.');return;}
+  }
+  const upiForm=document.getElementById('pf-upi');
+  if(upiForm.style.display!=='none'){
+    const uv=document.getElementById('py-upi').value.trim();
+    if(!uv.includes('@')){showToast('⚠️ Enter a valid UPI ID.');return;}
+  }
+  // Process
+  const btn=document.getElementById('pay-now-btn');
+  btn.textContent='⏳ Processing…';
+  btn.disabled=true;
+  setTimeout(()=>{
+    btn.textContent='Pay Now →';
+    btn.disabled=false;
+    const oid='10K'+Date.now().toString().slice(-8).toUpperCase();
+    document.getElementById('ord-id').textContent='Order ID: '+oid;
+    cart=[];
+    renderCart();
+    updateCartBadge();
+    showSection('pg-success');
+  },2000);
+}
+
+function clearAndShop(){cart=[];renderCart();updateCartBadge();showSection('pg-brands');}
+
+/* ── SEARCH ───────────────────────────────────────────── */
+function filterBrands(q){
+  const v=q.toLowerCase();
+  document.querySelectorAll('#brand-grid .brand-card').forEach(c=>{
+    c.classList.toggle('hide',!c.dataset.brand.includes(v));
+  });
+}
+function runSearch(){
+  const q=document.getElementById('hdr-search').value.trim().toLowerCase();
+  if(!q)return;
+  showSection('pg-brands');
+  setTimeout(()=>{
+    const fi=document.querySelector('.filter-in');
+    if(fi){fi.value=q;filterBrands(q);}
+  },200);
+}
+
+/* ── HAMBURGER ────────────────────────────────────────── */
+function toggleHam(){document.getElementById('ham-btn').classList.toggle('open');document.getElementById('mob-menu').classList.toggle('show');}
+function closeMob(){document.getElementById('ham-btn').classList.remove('open');document.getElementById('mob-menu').classList.remove('show');}
+
+/* ── TOAST ────────────────────────────────────────────── */
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTmr);
+  toastTmr=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+/* ── SCROLL TOP ───────────────────────────────────────── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('scrollTop').classList.toggle('visible',window.scrollY>280);
+});
+
+/* ── INIT ─────────────────────────────────────────────── */
+updateCartBadge();
+showSection('pg-landing');
+</script>
+</body>
+</html>

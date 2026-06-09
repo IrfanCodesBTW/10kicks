@@ -75,40 +75,40 @@
 
   <!-- ── MINIMAL LUXURY FOOTER ── -->
   <footer>
-    <div class="section" style="border-top: 1px solid var(--color-border); padding-top:var(--space-20);">
-      <div style="display:grid; grid-template-columns: 1.5fr 1fr 1.5fr; gap:var(--space-12); align-items:start;">
-        <div>
-          <h2 class="nav-logo" style="font-size:2rem; margin-bottom:var(--space-4);">10<span>K</span>ICKS</h2>
-          <p style="color:var(--color-text-muted); font-size:var(--text-sm); line-height:1.6; max-width:32ch;">
+    <div class="section footer-container">
+      <div class="footer-grid">
+        <div class="footer-info">
+          <h2 class="nav-logo footer-logo">10<span>K</span>ICKS</h2>
+          <p class="footer-desc">
             Luxury streetwear curation platform. Built by sneaker obsessives in Bengaluru, India.
           </p>
         </div>
-        <div style="display:flex; gap:var(--space-12);">
-          <div style="display:flex; flex-direction:column; gap:var(--space-4);">
-            <h5 style="font-family:var(--font-header); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.15em; color:var(--color-gold);">Navigation</h5>
-            <a href="#drops" style="font-size:12px; color:var(--color-text-muted);">Collections</a>
-            <a href="#brands" style="font-size:12px; color:var(--color-text-muted);">Universe</a>
-            <a href="#culture" style="font-size:12px; color:var(--color-text-muted);">Stories</a>
+        <div class="footer-links-wrap">
+          <div class="footer-links-col">
+            <h5 class="footer-col-title">Navigation</h5>
+            <a href="index.html#drops" class="footer-link">Collections</a>
+            <a href="brands.html" class="footer-link">Universe</a>
+            <a href="index.html#culture" class="footer-link">Stories</a>
           </div>
-          <div style="display:flex; flex-direction:column; gap:var(--space-4);">
-            <h5 style="font-family:var(--font-header); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.15em; color:var(--color-gold);">Legals</h5>
-            <a href="javascript:void(0)" onclick="showToastNotification('Authenticity verified by 10KICKS tag.')" style="font-size:12px; color:var(--color-text-muted);">Authenticity</a>
-            <a href="javascript:void(0)" onclick="showToastNotification('Secure shipments via Bluedart.')" style="font-size:12px; color:var(--color-text-muted);">Shipping Info</a>
-            <a href="javascript:void(0)" onclick="showToastNotification('Refunds processed within 3-5 bank days.')" style="font-size:12px; color:var(--color-text-muted);">Returns Policy</a>
+          <div class="footer-links-col">
+            <h5 class="footer-col-title">Legals</h5>
+            <a href="javascript:void(0)" onclick="showToastNotification('Authenticity verified by 10KICKS tag.')" class="footer-link">Authenticity</a>
+            <a href="javascript:void(0)" onclick="showToastNotification('Secure shipments via Bluedart.')" class="footer-link">Shipping Info</a>
+            <a href="javascript:void(0)" onclick="showToastNotification('Refunds processed within 3-5 bank days.')" class="footer-link">Returns Policy</a>
           </div>
         </div>
-        <div>
-          <h5 style="font-family:var(--font-header); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.15em; color:var(--color-gold); margin-bottom:var(--space-4);">Newsletter</h5>
-          <div style="display:flex; border-bottom: 1px solid var(--color-border); padding-bottom:6px;">
-            <input type="email" placeholder="Enter your email" style="background:transparent; border:none; color:var(--color-text); outline:none; font-size:12px; flex:1;" aria-label="Email Address"/>
-            <button style="font-size:12px; font-family:var(--font-header); font-weight:700; text-transform:uppercase;" onclick="showToastNotification('Subscription Confirmed.')">Join</button>
+        <div class="footer-newsletter">
+          <h5 class="footer-col-title">Newsletter</h5>
+          <div class="footer-newsletter-row">
+            <input type="email" placeholder="Enter your email" class="footer-newsletter-input" aria-label="Email Address"/>
+            <button class="footer-newsletter-btn" onclick="showToastNotification('Subscription Confirmed.')">Join</button>
           </div>
         </div>
       </div>
       
-      <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--color-divider); padding-top:var(--space-6); margin-top:var(--space-12); font-size:11px; color:var(--color-text-faint);">
+      <div class="footer-bottom-row">
         <p>&copy; 2026 10KICKS. Curated with authentic passion.</p>
-        <div style="display:flex; gap:16px;">
+        <div class="footer-badges">
           <span>Authentic Guarantees</span>
           <span>India Shipping Hub</span>
         </div>
@@ -118,9 +118,13 @@
 
   <!-- ── FLOATING MOBILE NAVIGATION BAR ── -->
   <div class="mobile-bottom-nav">
-    <a href="#hero" class="mob-nav-item active" onclick="closeAllOverlays()">
+    <a href="index.html" class="mob-nav-item" onclick="closeAllOverlays()">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
       <span>Home</span>
+    </a>
+    <a href="brands.html" class="mob-nav-item active" onclick="closeAllOverlays()">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      <span>Brands</span>
     </a>
     <a href="javascript:void(0)" class="mob-nav-item" onclick="openOverlay('catalogOverlay')">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -135,10 +139,6 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
       <span>Locker</span>
       <span class="icon-cnt" id="mobCartCnt">0</span>
-    </a>
-    <a href="javascript:void(0)" class="mob-nav-item" onclick="openAuthOverlay()">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-      <span>Access</span>
     </a>
   </div>
 

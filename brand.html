@@ -61,260 +61,18 @@
     </div>
   </header>
 
-  <!-- ── SECTION 1: IMMERSIVE HERO ── -->
-  <section class="hero" id="hero">
-    <!-- Cinematic Looping Video -->
-    <video class="hero-video" autoplay muted loop playsinline aria-hidden="true">
-      <source src="https://res.cloudinary.com/di3x3rekl/video/upload/v1/0609_1_online-video-cutter.com_jkdpd2.mp4" type="video/mp4"/>
-    </video>
-    <div class="hero-overlay" aria-hidden="true"></div>
-    <div class="hero-grid" aria-hidden="true"></div>
-    
-
-
-    <!-- Main Editorial Text -->
-    <div class="hero-content">
-      <div class="hero-editorial-titles">
-        <h1 class="hero-line"><span>Where Kicks</span></h1>
-        <h1 class="hero-line"><span>Become <em>Culture</em></span></h1>
-        
-        <p class="hero-subtitle">
-          An interactive digital catalogue showcasing rare sneakers curated from street archives. Shipped securely across India.
-        </p>
-        
-        <div class="hero-btn-wrap" style="display:flex; gap:var(--space-4); align-items:center;">
-          <a href="#drops" class="btn-luxury-cta magnetic-btn" style="padding: 0 var(--space-8);">
-            Enter The Archive &nbsp; &rarr;
-          </a>
-          <a href="#rare-drops" class="btn-luxury-outline magnetic-btn" style="padding: 0 var(--space-8); border-color: rgba(255,255,255,0.3); color: #fff;">
-            View Rare Drops
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scroll Indicator -->
-    <div style="position:absolute; bottom:var(--space-8); left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:var(--space-2); opacity:.5; z-index:5; pointer-events:none;">
-      <span style="font-family:var(--font-header); font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:#fff;">Scroll Down</span>
-      <div style="width:1px; height:32px; background:linear-gradient(#fff, transparent); animation:scroll-line-motion 1.8s ease-in-out infinite;"></div>
-    </div>
-    <style>
-      @keyframes scroll-line-motion {
-        0%, 100% { transform: scaleY(1); transform-origin: top; }
-        50% { transform: scaleY(1.4); transform-origin: top; }
-      }
-    </style>
-  </section>
-
-  <!-- ── SECTION 1.5: TRUST STATISTICS (Phase 6) ── -->
-  <section class="trust-bar section">
-    <div class="trust-grid">
-      <div class="trust-item reveal">
-        <h3 class="trust-val">100%</h3>
-        <span class="trust-label">Verified Authentic</span>
-      </div>
-      <div class="trust-item reveal">
-        <h3 class="trust-val">2500+</h3>
-        <span class="trust-label">Collectors Worldwide</span>
-      </div>
-      <div class="trust-item reveal">
-        <h3 class="trust-val">24HR</h3>
-        <span class="trust-label">Express Shipping</span>
-      </div>
-      <div class="trust-item reveal">
-        <h3 class="trust-val">LIMITED</h3>
-        <span class="trust-label">Weekly Drops</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── SECTION 1.6: LUXURY BRAND GRID (Phase 7) ── -->
-  <section class="luxury-brand-grid-section section">
-    <div class="brand-logo-grid" id="brandLogoGrid">
-      <!-- Generated via JS -->
-    </div>
-  </section>
-
-  <!-- ── SECTION 2: CURATED FEATURED COLLECTION ── -->
-  <section id="drops" class="section">
-    <div class="section-label reveal">Curated Collection</div>
-    <h2 class="section-title reveal">This Season's<br>Spotlights</h2>
-    <p class="section-desc reveal">
-      A meticulously selected roster of silhouettes that transcend utility to define contemporary streetwear style.
-    </p>
-
-    <!-- Asymmetric Magazine layout grid -->
-    <div class="featured-magazine-grid" id="dropsGrid">
-      <!-- Generated dynamically in index.js -->
-    </div>
-  </section>
-
-  <!-- ── PARALLAX BACKGROUND BIG TYPOGRAPHY ── -->
-  <div class="big-type-section" aria-hidden="true">
-    <div class="big-type" id="bigTypeMarquee">
-      <span>COLLECTORS</span>
-      <span class="big-type-outline">ARCHIVE</span>
-      <span class="big-type-accent">CULTURE</span>
-      <span class="big-type-outline">LIMITED</span>
-      <span>COLLECTORS</span>
-      <span class="big-type-outline">ARCHIVE</span>
-      <span class="big-type-accent">CULTURE</span>
-      <span class="big-type-outline">LIMITED</span>
-    </div>
-  </div>
-
-  <!-- ── SECTION 4: BRAND UNIVERSE MUSEUM ── -->
-  <section id="universeOuter" class="brand-universe-wrapper">
+  <main class="page-container brand-catalog-container" style="padding-top: var(--space-32); padding-bottom: var(--space-20); min-height: 80vh;">
     <div class="section">
-      <div class="section-label" style="color:var(--color-gold);">Brand Roster</div>
-      <h2 class="section-title" style="color:#F5F2EB;">The Brand Universe</h2>
-      <p class="section-desc" style="color:var(--color-text-muted);">
-        A physical horizontal gallery showcasing premium silhouettes across seven historical footwear labels. Drag or scroll to browse.
-      </p>
-      
-      <!-- Horizontal track container -->
-      <div id="universeTrack" class="universe-scroll-track">
-        <!-- Generated dynamically in index.js -->
+      <a href="brands.html" style="font-size: 12px; font-family: var(--font-header); text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-muted); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--color-gold)'" onmouseout="this.style.color='var(--color-text-muted)'">&larr; Back to Directory</a>
+      <h2 class="section-title" id="pageCatalogTitle" style="margin-top: var(--space-4);">Collection</h2>
+      <div style="margin-bottom:var(--space-8); max-width: 400px;">
+        <input type="text" id="pageCatalogSearch" placeholder="Search within collection..." oninput="filterPageCatalog()" class="luxury-form-input"/>
       </div>
-      
-      <div class="drag-hint-wrap">
-        <span>Hold & Drag to Pan Gallery</span>
-        <span class="drag-arrow">&rarr;</span>
+      <div class="catalog-drawer-grid" id="pageCatalogGrid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+        <!-- Dynamic Catalog Cards -->
       </div>
     </div>
-  </section>
-
-  <!-- ── SECTION 3: CULTURE STORIES ── -->
-  <section id="culture" class="section">
-    <div class="section-label reveal">Culture Stories</div>
-    <h2 class="section-title reveal">Beyond The Box</h2>
-    <p class="section-desc reveal">
-      Footwear is never just leather and rubber. Read our analytical narratives on design evolution, history, and collaborations.
-    </p>
-
-    <div class="stories-editorial-grid">
-      <div class="story-block reveal">
-        <span class="story-date">Design &bull; June 2026</span>
-        <h3 class="story-headline">The Anatomy of Grails</h3>
-        <p class="story-excerpt">
-          An examination of why certain silhouettes transcend commodity status to enter the realm of museum art and historical collectibles.
-        </p>
-        <span class="story-read-more">Read Essay</span>
-      </div>
-
-      <div class="story-block reveal">
-        <span class="story-date">History &bull; May 2026</span>
-        <h3 class="story-headline">Terrace Footwear Revival</h3>
-        <p class="story-excerpt">
-          Tracing the journey of low-profile court shoes from European football stands of the 80s to the fashion capital runways of modern Milan.
-        </p>
-        <span class="story-read-more">Read Essay</span>
-      </div>
-
-      <div class="story-block reveal">
-        <span class="story-date">Culture &bull; April 2026</span>
-        <h3 class="story-headline">Collaborative Alchemy</h3>
-        <p class="story-excerpt">
-          How designers bridge high-fashion runways and rubber soles to construct storytelling models that resonate across youth cultures.
-        </p>
-        <span class="story-read-more">Read Essay</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── SECTION 5: RARE LAUNCH COUNTDOWN ── -->
-  <section class="rare-drops-campaign" id="rare-drops">
-    <div class="section">
-      <div class="rare-campaign-grid">
-        <!-- Spotlight Showcase Left -->
-        <div class="countdown-showcase reveal">
-          <div class="countdown-showcase-ring"></div>
-          <img src="https://images.unsplash.com/photo-1539185441755-769473a23570?q=80&w=600" class="countdown-product-img" alt="Asics Launch Spotlight" onerror="this.src='https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=600'"/>
-        </div>
-
-        <!-- Timer details Right -->
-        <div class="countdown-content reveal">
-          <div class="section-label" style="color:var(--color-gold);">Rare Release Calendar</div>
-          <h2 class="section-title" style="color:#fff; margin-bottom:var(--space-2);">Asics Kayano 14</h2>
-          <p style="color:var(--color-text-muted); font-family:var(--font-editorial); font-size:1.15rem; font-style:italic;">
-            The late 2000s technical running renaissance. Hand-numbered elements, premium mesh panels, and metallic birch finishes.
-          </p>
-          
-          <div class="countdown-clock">
-            <div class="countdown-unit">
-              <span class="countdown-number" id="daysVal">03</span>
-              <span class="countdown-label">Days</span>
-            </div>
-            <div class="countdown-unit">
-              <span class="countdown-number" id="hoursVal">14</span>
-              <span class="countdown-label">Hrs</span>
-            </div>
-            <div class="countdown-unit">
-              <span class="countdown-number" id="minsVal">22</span>
-              <span class="countdown-label">Mins</span>
-            </div>
-            <div class="countdown-unit">
-              <span class="countdown-number" id="secsVal">10</span>
-              <span class="countdown-label">Secs</span>
-            </div>
-          </div>
-
-          <button class="btn-luxury-cta magnetic-btn" style="width:fit-content; padding: 0 var(--space-10);" onclick="openProductDetail('as1')">
-            Reserve Placement &nbsp; &rarr;
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── SECTION 6: VIP MEMBERSHIP ── -->
-  <section class="section membership-section">
-    <div class="membership-container">
-      <div class="reveal">
-        <div class="section-label">VIP Concierge</div>
-        <h2 class="section-title">10KICKS Black</h2>
-        <p class="section-desc">
-          exclusivity is value. Gain access to private sneaker lockers, rare drops before general release, and private fashion house events.
-        </p>
-        
-        <div class="membership-list">
-          <div class="membership-item">
-            <span class="membership-item-num">01</span>
-            <span class="membership-item-text">Early private reservations on limited releases.</span>
-          </div>
-          <div class="membership-item">
-            <span class="membership-item-num">02</span>
-            <span class="membership-item-text">Concierge delivery service with secure tracking.</span>
-          </div>
-          <div class="membership-item">
-            <span class="membership-item-num">03</span>
-            <span class="membership-item-text">Verified collection portfolios with historical records.</span>
-          </div>
-        </div>
-
-        <button class="btn-luxury-cta" onclick="showToastNotification('VIP registration is currently invite-only.')">
-          Request Invitation
-        </button>
-      </div>
-
-      <!-- Holographic 3D Card Right -->
-      <div class="membership-card-wrap reveal">
-        <div class="membership-black-card">
-          <div class="card-top">
-            <span class="card-brand-name">10KICKS</span>
-            <span class="card-tier">BLACK MEMBER</span>
-          </div>
-          <div class="card-bottom">
-            <div class="card-holder">
-              <span class="card-holder-label">Collector Portfolio</span>
-              <span class="card-holder-name">Verified Member</span>
-            </div>
-            <span class="card-number">•••• 8802</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  </main>
 
   <!-- ── MINIMAL LUXURY FOOTER ── -->
   <footer>
@@ -516,7 +274,7 @@
 
   <!-- Checkout Modal -->
   <div class="overlay-backdrop center-align" id="checkoutOverlay" onclick="closeOverlayOnBg(event, 'checkoutOverlay')">
-    <div class="overlay-modal" style="width:950px; max-height:85vh;">
+    <div class="overlay-modal" style="width:820px; max-height:85vh;">
       <div class="overlay-header">
         <h2>Secure Placement</h2>
         <button type="button" class="overlay-close" onclick="closeCheckoutOverlay()" aria-label="Close checkout modal">&times;</button>
@@ -629,7 +387,7 @@
           
           <!-- Right side Order summary -->
           <div>
-            <div class="checkout-card-box">
+            <div class="checkout-card-box" style="position:sticky; top:0;">
               <h3 class="checkout-card-title" style="display:flex; align-items:center; gap:8px;">
                 <svg viewBox="0 0 24 24" style="width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2;"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"></path><path d="M16 8H8M16 12H8M13 16H8"></path></svg>
                 Placement Portfolio
@@ -670,6 +428,43 @@
         </p>
         <div id="successOrderId" style="font-family:var(--font-header); font-size:14px; font-weight:800; color:var(--color-gold); background:var(--color-surface); padding:8px; margin-bottom:var(--space-6); border:1px solid var(--color-border);">Collection ID: </div>
         <button class="btn-luxury-cta" style="width:100%;" onclick="handleSuccessContinue()">Continue Browsing</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brands Directory Overlay -->
+  <div class="overlay-backdrop center-align" id="brandsOverlay" onclick="closeOverlayOnBg(event, 'brandsOverlay')">
+    <div class="overlay-modal" style="width:700px; max-height:85vh;">
+      <div class="overlay-header">
+        <h2>Brand Directory</h2>
+        <button type="button" class="overlay-close" onclick="closeBrandsOverlay()" aria-label="Close brands directory">&times;</button>
+      </div>
+      <div class="overlay-content" style="padding:var(--space-6) var(--space-8);">
+        <p style="color:var(--color-text-muted); font-size:13px; line-height:1.7; margin-bottom:var(--space-6); font-family:var(--font-editorial);">
+          Select a design house to view its complete historical archive and curated catalogue.
+        </p>
+        <div class="brands-directory-grid">
+          <div class="brand-dir-card" onclick="openBrandCatalog('nike')">
+            <h3 class="brand-dir-title">Nike</h3>
+            <p class="brand-dir-count">12 Archives</p>
+          </div>
+          <div class="brand-dir-card" onclick="openBrandCatalog('jordan')">
+            <h3 class="brand-dir-title">Jordan</h3>
+            <p class="brand-dir-count">8 Archives</p>
+          </div>
+          <div class="brand-dir-card" onclick="openBrandCatalog('newbalance')">
+            <h3 class="brand-dir-title">New Balance</h3>
+            <p class="brand-dir-count">5 Archives</p>
+          </div>
+          <div class="brand-dir-card" onclick="openBrandCatalog('yeezy')">
+            <h3 class="brand-dir-title">Yeezy</h3>
+            <p class="brand-dir-count">4 Archives</p>
+          </div>
+          <div class="brand-dir-card" onclick="openBrandCatalog('asics')">
+            <h3 class="brand-dir-title">Asics</h3>
+            <p class="brand-dir-count">3 Archives</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

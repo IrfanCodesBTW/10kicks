@@ -98,15 +98,6 @@ All you need is a modern web browser (Chrome, Firefox, Safari, Edge). No Node.js
 └── README.md        # Project documentation
 ```
 
----
-
-## 🤝 The Team
-
-Three passionate developers brought this vision to life:
-
-- 👨‍💻 **Irfan** *(Lead Developer)* — Engineered structural logic, landing page architecture, product cards, and core JS state.
-- 🎨 **Jaswanth** *(Front-End Designer)* — Polished the landing page, crafted the brand category aesthetics, and ensured visual harmony.
-- 🖌️ **Dinesh** *(UI/UX Developer)* — Implemented product carousels, detail pages, and engineered smooth cross-section navigation.
 
 ---
 

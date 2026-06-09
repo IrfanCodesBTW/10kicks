@@ -2005,7 +2005,7 @@ body.overlay-open {
 }
 .mob-nav-item span {
   font-family: var(--font-header);
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -2220,11 +2220,11 @@ body.overlay-open {
   fill: none;
 }
 .luxury-menu-drawer {
-  background: rgba(245, 242, 235, 0.8) !important;
-  backdrop-filter: blur(25px) !important;
-  -webkit-backdrop-filter: blur(25px) !important;
+  background: rgba(245, 242, 235, 0.92) !important;
+  backdrop-filter: blur(30px) saturate(1.2) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(1.2) !important;
   border-left: 1px solid var(--color-border);
-  width: 340px;
+  width: 320px;
   max-width: 85vw;
 }
 [data-theme="dark"] .luxury-menu-drawer {
@@ -2263,6 +2263,27 @@ body.overlay-open {
 }
 [data-theme="dark"] .bottom-sheet-handle {
   background: rgba(245, 242, 235, 0.2);
+}
+
+/* Touch swipe indicator for bottom sheet */
+.overlay-drawer::before {
+  display: none;
+}
+@media (max-width: 768px) {
+  .overlay-drawer::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 4px;
+    background: rgba(17, 17, 17, 0.15);
+    border-radius: 2px;
+    margin: var(--space-3) auto 0;
+    flex-shrink: 0;
+  }
+  [data-theme="dark"] .overlay-drawer::before,
+  .dark-section .overlay-drawer::before {
+    background: rgba(245, 242, 235, 0.15);
+  }
 }
 
 /* ── MEDIA QUERIES FOR LAPTOPS & TABLETS ── */
@@ -2570,8 +2591,200 @@ body.overlay-open {
   }
 }
 
+/* ── REDUCED MOTION: Disable animations for users who prefer it ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .custom-cursor, .custom-cursor-ring { display: none !important; }
+  .grain-overlay { display: none !important; }
+}
+
+/* ── FOCUS VISIBLE: Accessible keyboard focus ring ── */
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+/* ── CSS CONTAINMENT: Performance hints for cards ── */
+.product-card, .brand-logo-card, .universe-panel, .story-block {
+  contain: layout style paint;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 400px;
+}
+.product-card:hover, .product-card:focus-within {
+  contain: layout style;
+}
+
 /* ── SYSTEM CLEANUP FOR HORIZONTAL SCROLLING ── */
 body, html {
   max-width: 100vw;
   overflow-x: hidden !important;
+}
+
+/* ── ULTRA-COMPACT MOBILE (320-479px) ── */
+@media (max-width: 479px) {
+  .section {
+    padding: var(--space-16) var(--space-4) !important;
+  }
+  .section-title {
+    font-size: clamp(1.8rem, 8vw, 2.5rem) !important;
+    letter-spacing: -1px !important;
+    margin-bottom: var(--space-4) !important;
+  }
+  .section-desc {
+    font-size: clamp(0.85rem, 2.5vw, 1rem) !important;
+    max-width: 100% !important;
+    margin-bottom: var(--space-8) !important;
+  }
+  .section-label {
+    font-size: 9px !important;
+    margin-bottom: var(--space-3) !important;
+  }
+  
+  /* Trust bar compact */
+  .trust-bar {
+    padding: var(--space-8) var(--space-4) !important;
+  }
+  .trust-val {
+    font-size: clamp(1.5rem, 6vw, 2rem) !important;
+  }
+  .trust-label {
+    font-size: 9px !important;
+  }
+  
+  /* Brand grid compact */
+  .luxury-brand-grid-section {
+    padding-top: var(--space-12) !important;
+    padding-bottom: var(--space-8) !important;
+  }
+  .brand-logo-card {
+    font-size: 0.9rem !important;
+    aspect-ratio: 16/10 !important;
+  }
+  
+  /* Stories compact */
+  .stories-editorial-grid {
+    gap: var(--space-6) !important;
+  }
+  .story-block {
+    padding: var(--space-4) 0 var(--space-6) 0 !important;
+  }
+  .story-headline {
+    font-size: 1.2rem !important;
+  }
+  
+  /* Brand universe panels compact */
+  .universe-panel {
+    width: 85vw !important;
+    max-width: 85vw !important;
+    padding: var(--space-8) var(--space-6) !important;
+  }
+  .universe-panel-title {
+    font-size: 1.5rem !important;
+  }
+  .universe-panel-num {
+    font-size: 2.5rem !important;
+    margin-bottom: var(--space-4) !important;
+  }
+  .universe-panel-desc {
+    font-size: 0.95rem !important;
+    min-height: 3.6em !important;
+  }
+  
+  /* Countdown compact */
+  .countdown-clock {
+    gap: var(--space-3) !important;
+  }
+  .countdown-unit {
+    padding: var(--space-3) var(--space-4) !important;
+    min-width: 65px !important;
+  }
+  .countdown-number {
+    font-size: 1.8rem !important;
+  }
+  
+  /* Membership compact */
+  .membership-container {
+    gap: var(--space-8) !important;
+  }
+  .membership-list {
+    gap: var(--space-3) !important;
+    margin-bottom: var(--space-6) !important;
+  }
+  
+  /* Big type marquee smaller */
+  .big-type {
+    font-size: clamp(2.5rem, 10vw, 5rem) !important;
+    gap: var(--space-8) !important;
+  }
+  
+  /* Hero height and scroll indicator */
+  .hero {
+    height: 100svh !important;
+  }
+  
+  /* Toast notification compact */
+  .luxury-toast {
+    left: var(--space-4) !important;
+    right: var(--space-4) !important;
+    bottom: calc(80px + env(safe-area-inset-bottom)) !important;
+    text-align: center !important;
+    font-size: 11px !important;
+  }
+  
+  /* Hamburger menu drawer compact */
+  .luxury-menu-drawer {
+    width: 100% !important;
+    max-width: 100vw !important;
+    border-radius: 24px 24px 0 0 !important;
+  }
+  .hamburger-menu-links a {
+    font-size: clamp(1.3rem, 5vw, 1.8rem) !important;
+  }
+  
+  /* Product card image smaller padding */
+  .product-image-wrap {
+    padding: var(--space-4) !important;
+  }
+  
+  /* Detail overlay adjustments */
+  .detail-sizes-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+  .detail-actions-panel {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-2) !important;
+  }
+  
+  /* Checkout modal compact */
+  .checkout-card-box {
+    padding: var(--space-4) var(--space-3) !important;
+    margin-bottom: var(--space-3) !important;
+  }
+  .checkout-card-title {
+    font-size: 1rem !important;
+    margin-bottom: var(--space-3) !important;
+  }
+  
+  /* Cart drawer items compact */
+  .cart-drawer-item {
+    grid-template-columns: 60px 1fr auto !important;
+    gap: var(--space-3) !important;
+  }
+  
+  /* Footer spacing */
+  .footer-container {
+    padding-top: var(--space-12) !important;
+  }
+  .footer-links-wrap {
+    gap: var(--space-8) !important;
+  }
 }

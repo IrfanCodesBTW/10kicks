@@ -456,6 +456,11 @@ function initLenis() {
       nav.classList.toggle('nav-scrolled', e.scroll > 60);
       nav.classList.toggle('scrolled', e.scroll > 60);
     }
+    // Hide hamburger toggle when scrolled
+    const hamburger = document.getElementById('hamburgerToggle');
+    if (hamburger) {
+      hamburger.style.opacity = e.scroll > 60 ? '1' : '1';
+    }
     
     const topBtn = document.getElementById('scrollTopBtn');
     if (topBtn) {
@@ -1369,6 +1374,8 @@ function runSearch() {
 function initMagneticButtons() {
   const btns = document.querySelectorAll('.btn-luxury-cta, .btn-luxury-outline, .magnetic-btn');
   if (typeof gsap === 'undefined') return;
+  // Skip magnetic effect on touch devices
+  if (window.matchMedia('(pointer: coarse)').matches) return;
 
   btns.forEach(btn => {
     btn.addEventListener('mousemove', e => {
@@ -1382,6 +1389,46 @@ function initMagneticButtons() {
       gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
     });
   });
+}
+
+// ── HAMBURGER MENU DRAWER ──────────────────────────────────────────
+function toggleHamburgerMenu() {
+  const overlay = document.getElementById('hamburgerOverlay');
+  if (!overlay) return;
+  if (overlay.classList.contains('active')) {
+    closeHamburgerMenu();
+  } else {
+    openHamburgerMenu();
+  }
+}
+
+function openHamburgerMenu() {
+  const overlay = document.getElementById('hamburgerOverlay');
+  if (!overlay) return;
+  document.body.classList.add('overlay-open');
+  overlay.classList.add('active');
+  if (lenisInstance) lenisInstance.stop();
+  
+  if (typeof gsap !== 'undefined') {
+    const drawer = overlay.querySelector('.overlay-drawer');
+    gsap.fromTo(drawer, { y: '100%' }, { y: '0%', duration: 0.5, ease: 'power3.out', clearProps: 'all' });
+  }
+}
+
+function closeHamburgerMenu() {
+  const overlay = document.getElementById('hamburgerOverlay');
+  if (!overlay) return;
+  
+  if (typeof gsap !== 'undefined') {
+    const drawer = overlay.querySelector('.overlay-drawer');
+    gsap.to(drawer, { y: '100%', duration: 0.35, ease: 'power2.in', onComplete: () => {
+      overlay.classList.remove('active');
+      checkActiveOverlays();
+    }});
+  } else {
+    overlay.classList.remove('active');
+    checkActiveOverlays();
+  }
 }
 
 // ── SEARCH BOX FOR MOBILE & TABLETS ───────────────────────────────────
@@ -1551,17 +1598,20 @@ window.addEventListener('load', () => {
   if (typeof gsap === 'undefined') return;
   gsap.registerPlugin(ScrollTrigger);
 
+  // Mobile: reduce animation complexity for 60fps
+  const isMobile = window.matchMedia('(max-width: 768px)').matches || window.matchMedia('(pointer: coarse)').matches;
+
   // Initialize horizontal museum scrolling
   initBrandUniversePinning();
 
   // Staggered letters intro reveal timeline for hero text
-  const tl = gsap.timeline({ defaults: { ease: 'power4.out', duration: 1 } });
-  tl.to('.hero-line span', { y: '0%', stagger: 0.15, delay: 0.4 })
-    .from('.hero-subtitle', { opacity: 0, y: 15, duration: 0.8 }, '-=0.6')
-    .from('.hero-btn-wrap', { opacity: 0, y: 15, duration: 0.6 }, '-=0.5')
-    .from('.hero-shoe-img', { opacity: 0, y: 100, scale: 0.9, duration: 1.2, ease: 'expo.out' }, '-=0.8')
-    .from('.hero-shoe-shadow', { opacity: 0, scale: 0.5, duration: 1 }, '-=1')
-    .from('.hero-collector-card', { opacity: 0, x: 40, duration: 0.8 }, '-=0.8');
+  const tl = gsap.timeline({ defaults: { ease: 'power4.out', duration: isMobile ? 0.6 : 1 } });
+  tl.to('.hero-line span', { y: '0%', stagger: isMobile ? 0.08 : 0.15, delay: isMobile ? 0.2 : 0.4 })
+    .from('.hero-subtitle', { opacity: 0, y: isMobile ? 10 : 15, duration: isMobile ? 0.5 : 0.8 }, '-=0.6')
+    .from('.hero-btn-wrap', { opacity: 0, y: isMobile ? 10 : 15, duration: isMobile ? 0.4 : 0.6 }, '-=0.5')
+    .from('.hero-shoe-img', { opacity: 0, y: isMobile ? 60 : 100, scale: isMobile ? 0.95 : 0.9, duration: isMobile ? 0.8 : 1.2, ease: 'expo.out' }, '-=0.8')
+    .from('.hero-shoe-shadow', { opacity: 0, scale: 0.5, duration: isMobile ? 0.6 : 1 }, '-=1')
+    .from('.hero-collector-card', { opacity: 0, x: isMobile ? 20 : 40, duration: isMobile ? 0.5 : 0.8 }, '-=0.8');
 
   // Parallax backdrop outline scrolling marquee
   gsap.to('#bigTypeMarquee', {

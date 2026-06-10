@@ -1,7 +1,10 @@
 {
-  "name": "react-example",
+  "name": "10-kicks",
+  "version": "1.0.0",
+  "description": "A luxury sneaker curation platform and editorial street archive.",
   "private": true,
-  "version": "0.0.0",
+  "author": "10 Kicks Team",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",

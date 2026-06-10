@@ -88,21 +88,7 @@ export default function Navbar() {
         <a href="#" onClick={(e) => { e.preventDefault(); openOverlay('aboutOverlay'); }}>About</a>
       </nav>
       
-      {/* Drawer menu trigger */}
-      <button 
-        className="hamburger-toggle" 
-        id="hamburgerToggle" 
-        onClick={() => openOverlay('hamburgerOverlay')} 
-        aria-label="Open menu"
-        style={{ cursor: 'pointer' }}
-      >
-        <svg viewBox="0 0 24 24">
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-      </button>
-      
+
       <div className="nav-actions">
         <form onSubmit={executeSearch} className="search-box">
           <input 
@@ -151,6 +137,21 @@ export default function Navbar() {
             <path d="M16 10a4 4 0 0 1-8 0"></path>
           </svg>
           {cartCount > 0 && <span className="icon-cnt">{cartCount}</span>}
+        </button>
+        
+        {/* Drawer menu trigger */}
+        <button 
+          className="hamburger-toggle" 
+          id="hamburgerToggle" 
+          onClick={() => openOverlay('hamburgerOverlay')} 
+          aria-label="Open menu"
+          style={{ cursor: 'pointer' }}
+        >
+          <svg viewBox="0 0 24 24">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
         </button>
         
         {currentUser ? (

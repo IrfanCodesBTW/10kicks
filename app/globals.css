@@ -32,10 +32,10 @@
   --radius-full: 9999px; /* for round badges/buttons only */
 
   /* Luxury Easing */
-  --transition-slow: 600ms cubic-bezier(0.22, 1, 0.36, 1);
-  --transition-fast: 300ms cubic-bezier(0.22, 1, 0.36, 1);
-  --transition-medium: 450ms cubic-bezier(0.22, 1, 0.36, 1);
-  --easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-slow: 350ms cubic-bezier(0.32, 0.72, 0, 1);
+  --transition-medium: 220ms cubic-bezier(0.23, 1, 0.32, 1);
+  --transition-fast: 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  --easing: cubic-bezier(0.23, 1, 0.32, 1);
 
   /* Light Luxury Palette (Ivory & Sand - Default ALD / Fear of God Style) */
   --color-bg: #F5F2EB;
@@ -1321,7 +1321,7 @@ body.overlay-open {
   align-items: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--transition-slow);
+  transition: opacity var(--transition-medium); /* fast exit */
 }
 .overlay-backdrop.center-align {
   justify-content: center;
@@ -1329,6 +1329,7 @@ body.overlay-open {
 .overlay-backdrop.active {
   opacity: 1;
   pointer-events: auto;
+  transition: opacity var(--transition-slow); /* slower enter */
 }
 
 .overlay-drawer {
@@ -1341,7 +1342,7 @@ body.overlay-open {
   flex-direction: column;
   overflow: hidden;
   transform: translateX(100%);
-  transition: transform var(--transition-slow);
+  transition: transform var(--transition-medium); /* fast exit */
   box-shadow: var(--shadow-lg);
 }
 .overlay-drawer.wide-drawer {
@@ -1349,6 +1350,7 @@ body.overlay-open {
 }
 .overlay-backdrop.active .overlay-drawer {
   transform: translateX(0);
+  transition: transform var(--transition-slow); /* slower enter */
 }
 
 .overlay-modal {
@@ -1362,12 +1364,13 @@ body.overlay-open {
   overflow: hidden;
   transform: scale(0.95) translateY(10px);
   opacity: 0;
-  transition: transform var(--transition-slow), opacity var(--transition-slow);
+  transition: transform var(--transition-medium), opacity var(--transition-medium); /* fast exit */
   box-shadow: var(--shadow-lg);
 }
 .overlay-backdrop.active .overlay-modal {
   transform: scale(1) translateY(0);
   opacity: 1;
+  transition: transform var(--transition-slow), opacity var(--transition-slow); /* slower enter */
 }
 
 .overlay-header {
@@ -2007,6 +2010,9 @@ body.overlay-open {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
   gap: 3px;
   color: var(--color-text-muted);
   font-size: 16px;
@@ -2338,9 +2344,11 @@ body.overlay-open {
     border-left: none !important;
     border-top: 1px solid var(--color-border) !important;
     box-shadow: 0 -10px 40px rgba(0,0,0,0.15) !important;
+    transition: transform var(--transition-medium) !important; /* fast exit */
   }
   .overlay-backdrop.active .overlay-drawer {
     transform: translateY(0);
+    transition: transform var(--transition-slow) !important; /* slower enter */
   }
   .overlay-modal {
     width: 100% !important;
@@ -2354,9 +2362,11 @@ body.overlay-open {
     border: none !important;
     border-top: 1px solid var(--color-border) !important;
     box-shadow: 0 -10px 40px rgba(0,0,0,0.15) !important;
+    transition: transform var(--transition-medium) !important; /* fast exit */
   }
   .overlay-backdrop.active .overlay-modal {
     transform: translateY(0);
+    transition: transform var(--transition-slow) !important; /* slower enter */
   }
   
   .bottom-sheet-handle {
@@ -2394,7 +2404,8 @@ body.overlay-open {
     box-sizing: border-box;
   }
   .mob-nav-item {
-    height: 48px;
+    height: 100%;
+    width: 100%;
     justify-content: center;
     gap: 2px !important;
   }

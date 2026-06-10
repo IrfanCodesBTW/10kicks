@@ -1,6 +1,0 @@
-{
-  "name": "10KICKS",
-  "description": "A luxury sneaker curation platform and editorial street archive.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}

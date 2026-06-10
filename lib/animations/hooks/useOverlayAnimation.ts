@@ -20,13 +20,13 @@ export function useOverlayAnimation(
       document.body.style.overflow = 'hidden';
 
       if (!prefersReducedMotion && header) {
-        gsap.fromTo(header, { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', delay: 0.25 });
+        gsap.fromTo(header, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.25, ease: 'power3.out', delay: 0.05 });
       }
       if (!prefersReducedMotion && content) {
-        gsap.fromTo(content, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', delay: 0.3 });
+        gsap.fromTo(content, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25, ease: 'power3.out', delay: 0.08 });
       }
       if (!prefersReducedMotion && footer) {
-        gsap.fromTo(footer, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', delay: 0.35 });
+        gsap.fromTo(footer, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25, ease: 'power3.out', delay: 0.12 });
       }
     }
 

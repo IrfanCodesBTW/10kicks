@@ -1,0 +1,357 @@
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  brand: string;     // "nike", "adidas", etc.
+  back: string;      // Backwards compatibility alias for code expecting .back
+  image: string;     // Main image URL
+  img: string;       // Backwards compatibility alias for code expecting .img
+  images: string[];  // Gallery images Array
+  imgs: string[];    // Backwards compatibility alias for gallery
+  description: string;
+  desc: string;      // Backwards compatibility alias
+  materials: string;
+  styleNotes: string;
+}
+
+export const PRODUCTS: Product[] = [
+  // Nike
+  {
+    id: "nk1",
+    name: "AIR JORDAN 1 LOW Black Toe",
+    price: 8995,
+    brand: "nike",
+    back: "nike",
+    image: "https://images.footlocker.com/is/image/EBFL2/CZ0790106_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/CZ0790106_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/CZ0790106_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/CZ0790106_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "Sleek, low-cut, and built for daily expression. The Air Jordan 1 Low packs iconic court heritage with lightweight materials for modern street style.",
+    desc: "Sleek, low-cut, and built for daily expression. The Air Jordan 1 Low packs iconic court heritage with lightweight materials for modern street style.",
+    materials: "Premium grain leather, custom rubber cupsole, encapsulated Air-Sole unit.",
+    styleNotes: "Style with wide-leg relaxed denim and a vintage boxy tee."
+  },
+  {
+    id: "nk2",
+    name: "AIR JORDAN 1 RETRO HIGH OG Chicago",
+    price: 16995,
+    brand: "nike",
+    back: "nike",
+    image: "https://images.footlocker.com/is/image/EBFL2/DZ5485612_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/DZ5485612_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/DZ5485612_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/DZ5485612_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "The blueprint of sneaker culture. Premium distressed leather paneling, Wings brand detail, and the legendary Chicago colorway in a limited retro release.",
+    desc: "The blueprint of sneaker culture. Premium distressed leather paneling, Wings brand detail, and the legendary Chicago colorway in a limited retro release.",
+    materials: "Full grain tumble leather upper, woven tongue tags, rubber outsole.",
+    styleNotes: "Tuck into tailored utility trousers, accented with an overcoat."
+  },
+  {
+    id: "nk3",
+    name: "AIR JORDAN 1 RETRO HIGH Patent Bred",
+    price: 15495,
+    brand: "nike",
+    back: "nike",
+    image: "https://images.footlocker.com/is/image/EBFL2/555088063_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/555088063_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/555088063_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/555088063_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "Sitting perfectly at the intersection of high fashion and street performance. Classic Bred color blocking with a glossy, premium patent leather shine.",
+    desc: "Sitting perfectly at the intersection of high fashion and street performance. Classic Bred color blocking with a glossy, premium patent leather shine.",
+    materials: "Patent leather panels, nylon tongue details, solid rubber cupsole.",
+    styleNotes: "Best styled with raw selvedge denim and a clean neutral hoodie."
+  },
+  {
+    id: "nk4",
+    name: "NIKE AIR FORCE 1 '07 Triple White",
+    price: 8295,
+    brand: "nike",
+    back: "nike",
+    image: "https://images.footlocker.com/is/image/EBFL2/CW2288111_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/CW2288111_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/CW2288111_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/CW2288111_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "The defining street aesthetic. Clean, crisp white leather that matches every outfit, with a durable rubber sole for all-day comfort.",
+    desc: "The defining street aesthetic. Clean, crisp white leather that matches every outfit, with a durable rubber sole for all-day comfort.",
+    materials: "Full grain leather upper, foam midsole with encapsulated Air unit.",
+    styleNotes: "Style with white crew socks, clean athletic shorts, and a relaxed-fit knit sweater."
+  },
+  // Adidas
+  {
+    id: "ad1",
+    name: "ADIDAS SAMBA OG White Black",
+    price: 10999,
+    brand: "adidas",
+    back: "adidas",
+    image: "https://images.footlocker.com/is/image/EBFL2/B75806_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/B75806_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/B75806_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/B75806_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "The terrace culture superstar. A football trainer born in 1950, reborn as a modern design staple. Features a low-profile gum sole and signature serrated three-stripes.",
+    desc: "The terrace culture superstar. A football trainer born in 1950, reborn as a modern design staple. Features a low-profile gum sole and signature serrated three-stripes.",
+    materials: "Supple leather upper, suede T-toe overlay, premium gum rubber outsole.",
+    styleNotes: "Pair with relaxed white trousers and an open knit shirt."
+  },
+  {
+    id: "ad2",
+    name: "SL 72 RS RETRO SHOES Blue",
+    price: 7999,
+    brand: "adidas",
+    back: "adidas",
+    image: "https://images.footlocker.com/is/image/EBFL2/IG2132_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/IG2132_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/IG2132_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/IG2132_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "Retro 70s track identity engineered for the modern pavement. Lightweight nylon upper mixed with supple suede panels and a cushioned EVA midsole.",
+    desc: "Retro 70s track identity engineered for the modern pavement. Lightweight nylon upper mixed with supple suede panels and a cushioned EVA midsole.",
+    materials: "Nylon weave upper, premium suede trims, rippled traction outsole.",
+    styleNotes: "Wear with retro athletics shorts and a vintage track jacket."
+  },
+  {
+    id: "ad3",
+    name: "ADIDAS GAZELLE CLASSIC Black",
+    price: 9999,
+    brand: "adidas",
+    back: "adidas",
+    image: "https://images.footlocker.com/is/image/EBFL2/BB5476_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/BB5476_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/BB5476_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/BB5476_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "Suede terrace classic built on a retro indoor silhouette. Highlighted by gold-foil lettering and serrated leather stripes.",
+    desc: "Suede terrace classic built on a retro indoor silhouette. Highlighted by gold-foil lettering and serrated leather stripes.",
+    materials: "Suede leather upper, synthetic lining, textured rubber cupsole.",
+    styleNotes: "Best styled with relaxed chino pants and a vintage-wash collegiate tee."
+  },
+  {
+    id: "ad4",
+    name: "ADIDAS STAN SMITH White Green",
+    price: 8999,
+    brand: "adidas",
+    back: "adidas",
+    image: "https://images.footlocker.com/is/image/EBFL2/FX5502_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/FX5502_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/FX5502_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/FX5502_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "The clean tennis original. Defined by perforated three-stripes, green heel tab detailing, and a minimalist design aesthetic.",
+    desc: "The clean tennis original. Defined by perforated three-stripes, green heel tab detailing, and a minimalist design aesthetic.",
+    materials: "Primegreen high-performance recycled upper, rubber outsole.",
+    styleNotes: "Pair with smart linen trousers and a striped polo shirt."
+  },
+  // New balance
+  {
+    id: "nb1",
+    name: "NEW BALANCE 550 White Grey",
+    price: 11999,
+    brand: "newbalance",
+    back: "newbalance",
+    image: "https://images.footlocker.com/is/image/EBFL2/BB550WT1_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/BB550WT1_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/BB550WT1_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/BB550WT1_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "The 1989 court classic reborn. Simple, clean lines, and vintage off-white tones that define contemporary luxury. Suede overlays meet a chunkier heritage sole.",
+    desc: "The 1989 court classic reborn. Simple, clean lines, and vintage off-white tones that define contemporary luxury. Suede overlays meet a chunkier heritage sole.",
+    materials: "Perforated leather details, suede overlay, Ortholite comfort footbed.",
+    styleNotes: "Clean preppy style with pleated trousers and a heavy knit crewneck."
+  },
+  {
+    id: "nb2",
+    name: "NEW BALANCE 9060 Rain Cloud",
+    price: 15999,
+    brand: "newbalance",
+    back: "newbalance",
+    image: "https://images.footlocker.com/is/image/EBFL2/U9060FNA_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/U9060FNA_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/U9060FNA_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/U9060FNA_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "A futuristic expression of classic running lineage. Features warped, exaggerated design details inspired by early 2000s tech aesthetics.",
+    desc: "A futuristic expression of classic running lineage. Features warped, exaggerated design details inspired by early 2000s tech aesthetics.",
+    materials: "Heavy mesh upper, pigskin suede overlays, dual-density ABZORB sole.",
+    styleNotes: "Wear with cropped cargo pants and a relaxed-fit mock neck."
+  },
+  {
+    id: "nb3",
+    name: "NEW BALANCE 1906R Castlerock",
+    price: 14999,
+    brand: "newbalance",
+    back: "newbalance",
+    image: "https://images.footlocker.com/is/image/EBFL2/M1906RVN_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/M1906RVN_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/M1906RVN_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/M1906RVN_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "A tech running icon from 2010 reimagined for the modern street. Classic N-ergy cushioning provides premium impact protection.",
+    desc: "A tech running icon from 2010 reimagined for the modern street. Classic N-ergy cushioning provides premium impact protection.",
+    materials: "Breathable open mesh upper, synthetic overlays, TPU heel cage.",
+    styleNotes: "Wear with wide nylon windpants and a technical half-zip pullover."
+  },
+  // Yeezy
+  {
+    id: "yz1",
+    name: "YEEZY BOOST 350 V2 Zebra",
+    price: 24999,
+    brand: "yeezy",
+    back: "yeezy",
+    image: "https://images.footlocker.com/is/image/EBFL2/CP9654_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/CP9654_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/CP9654_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/CP9654_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "A modern design archive. Features engineered Primeknit, monofilament side stripes, and full-length Boost cushioning for a cloud-like ride.",
+    desc: "A modern design archive. Features engineered Primeknit, monofilament side stripes, and full-length Boost cushioning for a cloud-like ride.",
+    materials: "Recycled Primeknit upper, translucent TPU cage, responsive Boost foam.",
+    styleNotes: "Monochromatic street style with distressed denim and an oversized hoodie."
+  },
+  {
+    id: "yz2",
+    name: "YEEZY FOAM RUNNER Onyx",
+    price: 8999,
+    brand: "yeezy",
+    back: "yeezy",
+    image: "https://images.footlocker.com/is/image/EBFL2/HP8739_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/HP8739_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/HP8739_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/HP8739_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "Futuristic organic design cast in a single piece. Offers lightweight comfort, unique ventilation channels, and a sculptural aesthetic.",
+    desc: "Futuristic organic design cast in a single piece. Offers lightweight comfort, unique ventilation channels, and a sculptural aesthetic.",
+    materials: "Injected EVA foam blended with harvested algae.",
+    styleNotes: "Minimalist lounge look with fleece sweatpants and a luxury coat."
+  },
+  // Asics
+  {
+    id: "as1",
+    name: "ASICS GEL-KAYANO 14 Birch",
+    price: 13999,
+    brand: "asics",
+    back: "asics",
+    image: "https://images.footlocker.com/is/image/EBFL2/1201A019200_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/1201A019200_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/1201A019200_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/1201A019200_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "Late 2000s tech runner aesthetic with updated materials. Represents the perfect intersection of performance running and luxury streetwear.",
+    desc: "Late 2000s tech runner aesthetic with updated materials. Represents the perfect intersection of performance running and luxury streetwear.",
+    materials: "Open knit mesh, synthetic leather overlays, signature GEL technology.",
+    styleNotes: "Style with loose shell windbreaker pants and a utility vest."
+  },
+  // Puma
+  {
+    id: "pm1",
+    name: "PUMA PALERMO Leather Black",
+    price: 6999,
+    brand: "puma",
+    back: "puma",
+    image: "https://images.footlocker.com/is/image/EBFL2/39646302_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/39646302_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/39646302_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/39646302_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "A legendary terrace style from the 80s archives. Clean, low-profile aesthetics complete with signature Palermo branding details.",
+    desc: "A legendary terrace style from the 80s archives. Clean, low-profile aesthetics complete with signature Palermo branding details.",
+    materials: "Smooth leather upper, suede overlays, gum rubber outsole.",
+    styleNotes: "Style with corduroy shorts, white socks, and a simple white tee."
+  },
+  {
+    id: "pm2",
+    name: "PUMA SUEDE CLASSIC Black",
+    price: 5999,
+    brand: "puma",
+    back: "puma",
+    image: "https://images.footlocker.com/is/image/EBFL2/37491501_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/37491501_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/37491501_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/37491501_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "The timeless classic that defined b-boy culture and street styling since 1968. Features the iconic Formstrip overlay.",
+    desc: "The timeless classic that defined b-boy culture and street styling since 1968. Features the iconic Formstrip overlay.",
+    materials: "Full premium suede upper, rubber cupsole.",
+    styleNotes: "Style with cuffed chinos, a graphic tee, and an unbuttoned overshirt."
+  },
+  // Converse
+  {
+    id: "cv1",
+    name: "CHUCK 70 HIGH TOP Parchment",
+    price: 6399,
+    brand: "converse",
+    back: "converse",
+    image: "https://images.footlocker.com/is/image/EBFL2/162053C_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/162053C_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/162053C_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/162053C_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "The standard of street canvas shoes. Combines retro details with modern comfort accents, durable heavy canvas, and varnished egret foxing.",
+    desc: "The standard of street canvas shoes. Combines retro details with modern comfort accents, durable heavy canvas, and varnished egret foxing.",
+    materials: "12oz organic cotton canvas upper, plush Ortholite lining, rubber toe cap.",
+    styleNotes: "Completely versatile. Pair with everything from suits to cargo shorts."
+  },
+  {
+    id: "cv2",
+    name: "CHUCK 70 HIGH TOP Black",
+    price: 6399,
+    brand: "converse",
+    back: "converse",
+    image: "https://images.footlocker.com/is/image/EBFL2/162050C_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/162050C_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/162050C_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/162050C_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "The definitive silhouette that shaped generations. Heavyweight canvas and classic star ankle patch details.",
+    desc: "The definitive silhouette that shaped generations. Heavyweight canvas and classic star ankle patch details.",
+    materials: "12oz cotton canvas, varnished rubber midbox, Ortholite padding.",
+    styleNotes: "Looks best with vintage relaxed-fit trousers and a tucked-in tank."
+  },
+  // Reebok
+  {
+    id: "rb1",
+    name: "REEBOK CLUB C 85 White",
+    price: 6999,
+    brand: "reebok",
+    back: "reebok",
+    image: "https://images.footlocker.com/is/image/EBFL2/AR0455_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/AR0455_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/AR0455_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/AR0455_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "Minimalist court trainer from 1985. Retro tennis style details, clean leather overlays, and subtle Union Jack flag window box branding.",
+    desc: "Minimalist court trainer from 1985. Retro tennis style details, clean leather overlays, and subtle Union Jack flag window box branding.",
+    materials: "Soft garment leather upper, molded sockliner, abrasion-resistant rubber outsole.",
+    styleNotes: "Style with grey marl sweatpants and a vintage collegiate crewneck."
+  },
+  {
+    id: "rb2",
+    name: "REEBOK CLASSIC LEATHER White",
+    price: 7999,
+    brand: "reebok",
+    back: "reebok",
+    image: "https://images.footlocker.com/is/image/EBFL2/49799_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/49799_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/49799_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/49799_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "A running silhouette born in 1983, now a street classic. Soft premium leather provides ultimate everyday comfort.",
+    desc: "A running silhouette born in 1983, now a street classic. Soft premium leather provides ultimate everyday comfort.",
+    materials: "Garment leather upper, lightweight die-cut EVA midsole, rubber outsole.",
+    styleNotes: "Pair with light-wash blue denim and a relaxed-fit coach jacket."
+  },
+  // Vans
+  {
+    id: "vn1",
+    name: "VANS OLD SKOOL Black White",
+    price: 5299,
+    brand: "vans",
+    back: "vans",
+    image: "https://images.footlocker.com/is/image/EBFL2/VN000D3HY28_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/VN000D3HY28_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/VN000D3HY28_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/VN000D3HY28_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "The skate classic that first bared the iconic side stripe. Vulcanized waffle sole and durable canvas/suede design panels.",
+    desc: "The skate classic that first bared the iconic side stripe. Vulcanized waffle sole and durable canvas/suede design panels.",
+    materials: "Suede and canvas upper, reinforced toe caps, rubber waffle outsole.",
+    styleNotes: "Looks classic with black dickies trousers and a heavyweight graphic tee."
+  },
+  {
+    id: "vn2",
+    name: "VANS CLASSIC SLIP-ON Checkerboard",
+    price: 4799,
+    brand: "vans",
+    back: "vans",
+    image: "https://images.footlocker.com/is/image/EBFL2/EYEBWW_a1?wid=500&hei=500&fmt=png-alpha",
+    img: "https://images.footlocker.com/is/image/EBFL2/EYEBWW_a1?wid=500&hei=500&fmt=png-alpha",
+    images: ["https://images.footlocker.com/is/image/EBFL2/EYEBWW_a1?wid=500&hei=500&fmt=png-alpha"],
+    imgs: ["https://images.footlocker.com/is/image/EBFL2/EYEBWW_a1?wid=500&hei=500&fmt=png-alpha"],
+    description: "The legendary low-profile slip-on with side accents and checkerboard printing that defined skate and pop culture.",
+    desc: "The legendary low-profile slip-on with side accents and checkerboard printing that defined skate and pop culture.",
+    materials: "Sturdy canvas upper, elastic side accents, waffle rubber sole.",
+    styleNotes: "Style with loose denim and a relaxed-fit linen shirt."
+  }
+];

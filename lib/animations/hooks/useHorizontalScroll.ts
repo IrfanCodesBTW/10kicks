@@ -4,6 +4,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { useMediaQuery } from '@/lib/hooks/useMediaQuery';
 
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
 export interface HorizontalScrollOptions {
   trackRef: RefObject<HTMLElement>;
   outerRef: RefObject<HTMLElement>;
@@ -84,16 +86,30 @@ export function useHorizontalScroll(options: HorizontalScrollOptions) {
       window.addEventListener('pointermove', onPointerMove);
       window.addEventListener('pointerup', onPointerUp);
 
+      // Create ResizeObserver to refresh ScrollTrigger when images load and track size changes
+      const resizeObserver = new ResizeObserver(() => {
+        ScrollTrigger.refresh();
+      });
+      resizeObserver.observe(track);
+
       return () => {
         track.removeEventListener('pointerdown', onPointerDown);
         window.removeEventListener('pointermove', onPointerMove);
         window.removeEventListener('pointerup', onPointerUp);
+        resizeObserver.disconnect();
         scrollTween.kill();
         ScrollTrigger.getAll().forEach(st => st.kill());
       };
     }
 
+    // Create ResizeObserver for non-draggable mode too
+    const resizeObserver = new ResizeObserver(() => {
+      ScrollTrigger.refresh();
+    });
+    resizeObserver.observe(track);
+
     return () => {
+      resizeObserver.disconnect();
       scrollTween.kill();
     };
   }, { scope: outerRef, dependencies: [enabled, dragEnabled, scrub, isMobile, prefersReducedMotion] });

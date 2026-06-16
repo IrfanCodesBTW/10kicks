@@ -86,30 +86,33 @@ export function useHorizontalScroll(options: HorizontalScrollOptions) {
       window.addEventListener('pointermove', onPointerMove);
       window.addEventListener('pointerup', onPointerUp);
 
-      // Create ResizeObserver to refresh ScrollTrigger when images load and track size changes
-      const resizeObserver = new ResizeObserver(() => {
-        ScrollTrigger.refresh();
-      });
-      resizeObserver.observe(track);
+      // Refresh ScrollTrigger after a short delay to account for image loading
+      // and layout shifts in production (Vercel) without causing infinite loops
+      const t1 = setTimeout(() => ScrollTrigger.refresh(), 500);
+      const t2 = setTimeout(() => ScrollTrigger.refresh(), 1500);
+      const t3 = setTimeout(() => ScrollTrigger.refresh(), 3000);
 
       return () => {
         track.removeEventListener('pointerdown', onPointerDown);
         window.removeEventListener('pointermove', onPointerMove);
         window.removeEventListener('pointerup', onPointerUp);
-        resizeObserver.disconnect();
+        clearTimeout(t1);
+        clearTimeout(t2);
+        clearTimeout(t3);
         scrollTween.kill();
         ScrollTrigger.getAll().forEach(st => st.kill());
       };
     }
 
-    // Create ResizeObserver for non-draggable mode too
-    const resizeObserver = new ResizeObserver(() => {
-      ScrollTrigger.refresh();
-    });
-    resizeObserver.observe(track);
+    // Refresh ScrollTrigger after a short delay for non-draggable mode too
+    const t1 = setTimeout(() => ScrollTrigger.refresh(), 500);
+    const t2 = setTimeout(() => ScrollTrigger.refresh(), 1500);
+    const t3 = setTimeout(() => ScrollTrigger.refresh(), 3000);
 
     return () => {
-      resizeObserver.disconnect();
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
       scrollTween.kill();
     };
   }, { scope: outerRef, dependencies: [enabled, dragEnabled, scrub, isMobile, prefersReducedMotion] });

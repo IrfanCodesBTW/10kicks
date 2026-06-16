@@ -3,7 +3,7 @@ import { useUI } from '@/lib/context/AppContext';
 import { useOverlayAnimation } from '@/lib/animations/hooks/useOverlayAnimation';
 
 export default function Auth() {
-  const { activeOverlay, closeOverlay, setCurrentUser, showToast } = useUI();
+  const { activeOverlay, closeOverlay, setCurrentUser, showToast, pendingAction, setPendingAction, openOverlay } = useUI();
   const containerRef = useRef<HTMLDivElement>(null);
   const [tab, setTab] = useState<'in' | 'up'>('in');
   const [email, setEmail] = useState('');
@@ -18,6 +18,18 @@ export default function Auth() {
 
   const isActive = activeOverlay === 'authOverlay';
   useOverlayAnimation(containerRef, isActive);
+
+  const completeAuth = (user: { name: string; email: string | null }, message: string) => {
+    setCurrentUser(user);
+    showToast(message);
+    closeOverlay('authOverlay');
+    if (pendingAction === 'checkout') {
+      setPendingAction(null);
+      setTimeout(() => {
+        openOverlay('checkoutOverlay');
+      }, 400);
+    }
+  };
 
   const handleSignIn = () => {
     const em = email.trim().toLowerCase();
@@ -35,9 +47,7 @@ export default function Auth() {
       return;
     }
 
-    setCurrentUser({ name: account.name, email: em });
-    showToast(`Welcome to 10KICKS, ${account.name.split(' ')[0]}`);
-    closeOverlay('authOverlay');
+    completeAuth({ name: account.name, email: em }, `Welcome to 10KICKS, ${account.name.split(' ')[0]}`);
   };
 
   const handleSignUp = () => {
@@ -60,15 +70,11 @@ export default function Auth() {
       [em]: { name, pass },
     };
     setRegisteredAccounts(updatedAccounts);
-    setCurrentUser({ name, email: em });
-    showToast(`Portfolio Logged. Welcome ${name.split(' ')[0]}!`);
-    closeOverlay('authOverlay');
+    completeAuth({ name, email: em }, `Portfolio Logged. Welcome ${name.split(' ')[0]}!`);
   };
 
   const handleGuestLogin = () => {
-    setCurrentUser({ name: 'Guest Collector', email: null });
-    showToast('Lobby guest access authorized.');
-    closeOverlay('authOverlay');
+    completeAuth({ name: 'Guest Collector', email: null }, 'Lobby guest access authorized.');
   };
 
   return (

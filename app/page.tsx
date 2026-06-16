@@ -12,9 +12,42 @@ import { PRODUCTS } from '@/lib/data/products';
 import { BRANDS } from '@/lib/data/brands';
 import { useUI, useWishlist } from '@/lib/context/AppContext';
 
+// Countdown digit micro-flip animator component
+function CountdownUnit({ value, label }: { value: string; label: string }) {
+  const [prevVal, setPrevVal] = useState(value);
+  const [animating, setAnimating] = useState(false);
+
+  useEffect(() => {
+    if (value !== prevVal) {
+      setAnimating(true);
+      const timer = setTimeout(() => {
+        setPrevVal(value);
+        setAnimating(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [value, prevVal]);
+
+  return (
+    <div className="countdown-unit">
+      <span className={`countdown-number ${animating ? 'digit-flip' : ''}`}>
+        {value}
+      </span>
+      <span className="countdown-label">{label}</span>
+    </div>
+  );
+}
+
 export default function Page() {
   const navigate = useNavigate();
-  const { openOverlay, setSelectedProductId, setSelectedSize, setDetailQuantity, showToast } = useUI();
+  const { 
+    openOverlay, 
+    setSelectedProductId, 
+    setSelectedSize, 
+    setDetailQuantity, 
+    showToast,
+    setSelectedStoryId 
+  } = useUI();
   const { toggleWishlist, isSaved } = useWishlist();
   
   const pageRef = useRef<HTMLDivElement>(null);
@@ -99,6 +132,17 @@ export default function Page() {
     openOverlay('detailOverlay');
   };
 
+  const getBrandSlug = (brandName: string) => {
+    const name = brandName.toLowerCase();
+    if (name.includes('jordan') || name.includes('dunk') || name.includes('travis') || name.includes('kobe') || name.includes('nike')) {
+      return 'nike';
+    }
+    if (name.includes('yeezy')) return 'yeezy';
+    if (name.includes('new balance')) return 'newbalance';
+    if (name.includes('asics')) return 'asics';
+    return name.replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  };
+
   return (
     <div ref={pageRef}>
       {/* Cinematic Hero */}
@@ -133,13 +177,15 @@ export default function Page() {
             'Air Jordan', 'Yeezy', 'New Balance', 'Asics', 'Salomon', 'Nike Dunk',
             'Off-White', 'Fear Of God', 'Aime Leon Dore', 'Travis Scott', 'Kobe', "Arc'teryx"
           ].map((brand, idx) => (
-            <div 
+            <button 
               key={idx} 
+              type="button"
               className="brand-logo-card reveal"
-              onClick={() => navigate('/brands')}
+              onClick={() => navigate(`/brand/${getBrandSlug(brand)}`)}
+              aria-label={`View ${brand} Archive`}
             >
               {brand}
-            </div>
+            </button>
           ))}
         </div>
       </section>
@@ -225,7 +271,14 @@ export default function Page() {
               const num = String(i + 1).padStart(2, '0');
               const productsCount = PRODUCTS.filter((p) => p.brand === b.id).length;
               return (
-                <div key={b.id} className="universe-panel" onClick={() => navigate(`/brand/${b.id}`)}>
+                <button 
+                  key={b.id} 
+                  type="button"
+                  className="universe-panel" 
+                  onClick={() => navigate(`/brand/${b.id}`)}
+                  style={{ textAlign: 'left' }}
+                  aria-label={`Explore ${b.name} Collection`}
+                >
                   <div className="universe-panel-bg-text">{b.name.split(' ')[0]}</div>
                   <div className="universe-panel-num">{num}</div>
                   <h3 className="universe-panel-title">{b.name}</h3>
@@ -234,7 +287,7 @@ export default function Page() {
                     <span className="universe-panel-count">{productsCount} Curated Pieces</span>
                     <span className="universe-panel-link">Explore Collection &rarr;</span>
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -255,7 +308,24 @@ export default function Page() {
         </p>
 
         <div className="stories-editorial-grid">
-          <div className="story-block reveal" style={{ cursor: 'pointer' }} onClick={() => showToast('Stories: The Anatomy of Grails selected.')}>
+          <div 
+            className="story-block reveal" 
+            style={{ cursor: 'pointer' }} 
+            onClick={() => {
+              setSelectedStoryId('story1');
+              openOverlay('storyOverlay');
+            }}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setSelectedStoryId('story1');
+                openOverlay('storyOverlay');
+              }
+            }}
+            aria-label="Read Essay: The Anatomy of Grails"
+          >
             <span className="story-date">Design &bull; June 2026</span>
             <h3 className="story-headline">The Anatomy of Grails</h3>
             <p className="story-excerpt">
@@ -264,7 +334,24 @@ export default function Page() {
             <span className="story-read-more">Read Essay</span>
           </div>
 
-          <div className="story-block reveal" style={{ cursor: 'pointer' }} onClick={() => showToast('Stories: Terrace Footwear selected.')}>
+          <div 
+            className="story-block reveal" 
+            style={{ cursor: 'pointer' }} 
+            onClick={() => {
+              setSelectedStoryId('story2');
+              openOverlay('storyOverlay');
+            }}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setSelectedStoryId('story2');
+                openOverlay('storyOverlay');
+              }
+            }}
+            aria-label="Read Essay: Terrace Footwear Revival"
+          >
             <span className="story-date">History &bull; May 2026</span>
             <h3 className="story-headline">Terrace Footwear Revival</h3>
             <p className="story-excerpt">
@@ -273,7 +360,24 @@ export default function Page() {
             <span className="story-read-more">Read Essay</span>
           </div>
 
-          <div className="story-block reveal" style={{ cursor: 'pointer' }} onClick={() => showToast('Stories: Collaborative Alchemy selected.')}>
+          <div 
+            className="story-block reveal" 
+            style={{ cursor: 'pointer' }} 
+            onClick={() => {
+              setSelectedStoryId('story3');
+              openOverlay('storyOverlay');
+            }}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setSelectedStoryId('story3');
+                openOverlay('storyOverlay');
+              }
+            }}
+            aria-label="Read Essay: Collaborative Alchemy"
+          >
             <span className="story-date">Culture &bull; April 2026</span>
             <h3 className="story-headline">Collaborative Alchemy</h3>
             <p className="story-excerpt">
@@ -304,29 +408,17 @@ export default function Page() {
 
             {/* Timer detail panels Right */}
             <div className="countdown-content reveal">
-              <div className="section-label" style={{ color: 'var(--color-gold)' }}>Rare Release Calendar</div>
+              <div className="section-label" style={{ color: 'var(--color-gold)' }}>Paragraph Release Calendar</div>
               <h2 className="section-title" style={{ color: '#fff', marginBottom: 'var(--space-2)' }}>Asics Kayano 14</h2>
               <p style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-editorial)', fontSize: '1.15rem', fontStyle: 'italic' }}>
                 The late 2000s technical running renaissance. Hand-numbered elements, premium mesh panels, and metallic birch finishes.
               </p>
               
               <div className="countdown-clock">
-                <div className="countdown-unit">
-                  <span className="countdown-number">{days}</span>
-                  <span className="countdown-label">Days</span>
-                </div>
-                <div className="countdown-unit">
-                  <span className="countdown-number">{hours}</span>
-                  <span className="countdown-label">Hrs</span>
-                </div>
-                <div className="countdown-unit">
-                  <span className="countdown-number">{mins}</span>
-                  <span className="countdown-label">Mins</span>
-                </div>
-                <div className="countdown-unit">
-                  <span className="countdown-number">{secs}</span>
-                  <span className="countdown-label">Secs</span>
-                </div>
+                <CountdownUnit value={days} label="Days" />
+                <CountdownUnit value={hours} label="Hrs" />
+                <CountdownUnit value={mins} label="Mins" />
+                <CountdownUnit value={secs} label="Secs" />
               </div>
 
               <MagneticButton

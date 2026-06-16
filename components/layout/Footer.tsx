@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUI } from '@/lib/context/AppContext';
 
 export default function Footer() {
   const navigate = useNavigate();
   const { showToast, closeAllOverlays } = useUI();
+  const [newsletterEmail, setNewsletterEmail] = useState('');
 
   const handleLogoClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -22,12 +24,26 @@ export default function Footer() {
     }, 150);
   };
 
+  const handleSubscribe = () => {
+    const email = newsletterEmail.trim();
+    if (!email) {
+      showToast('⚠️ Please enter an email address.');
+      return;
+    }
+    if (!email.includes('@') || email.length < 5) {
+      showToast('⚠️ Please enter a valid email address.');
+      return;
+    }
+    showToast('Subscription Confirmed.');
+    setNewsletterEmail('');
+  };
+
   return (
-    <footer>
+    <footer className="footer">
       <div className="section footer-container">
         <div className="footer-grid">
           <div className="footer-info">
-            <h2 className="nav-logo footer-logo" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
+            <h2 className="footer-logo" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
               10<span>K</span>ICKS
             </h2>
             <p className="footer-desc">
@@ -79,10 +95,15 @@ export default function Footer() {
                 placeholder="Enter your email" 
                 className="footer-newsletter-input" 
                 aria-label="Email Address"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleSubscribe();
+                }}
               />
               <button 
                 className="footer-newsletter-btn" 
-                onClick={() => showToast('Subscription Confirmed.')}
+                onClick={handleSubscribe}
               >
                 Join
               </button>

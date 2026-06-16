@@ -4,7 +4,7 @@ import { useOverlayAnimation } from '@/lib/animations/hooks/useOverlayAnimation'
 
 export default function Cart() {
   const { cart, cartSubtotal, cartGST, cartGrandTotal, changeCartQty, removeFromCart } = useCart();
-  const { activeOverlay, closeOverlay, openOverlay } = useUI();
+  const { activeOverlay, closeOverlay, openOverlay, currentUser, setPendingAction, showToast } = useUI();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const isActive = activeOverlay === 'cartOverlay';
@@ -116,7 +116,13 @@ export default function Cart() {
               style={{ width: '100%', marginTop: 'var(--space-6)', cursor: 'pointer' }} 
               onClick={() => {
                 closeOverlay('cartOverlay');
-                openOverlay('checkoutOverlay');
+                if (currentUser) {
+                  openOverlay('checkoutOverlay');
+                } else {
+                  setPendingAction('checkout');
+                  openOverlay('authOverlay');
+                  showToast('ℹ️ Please sign in to reserve your pair.');
+                }
               }}
             >
               Checkout Locker &rarr;

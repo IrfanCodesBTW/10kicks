@@ -4,9 +4,18 @@ import { PRODUCTS, Product } from '@/lib/data/products';
 import { useOverlayAnimation } from '@/lib/animations/hooks/useOverlayAnimation';
 
 export default function Search() {
-  const { activeOverlay, closeOverlay, openOverlay, setSelectedProductId, setSelectedSize, setDetailQuantity } = useUI();
+  const { 
+    activeOverlay, 
+    closeOverlay, 
+    openOverlay, 
+    setSelectedProductId, 
+    setSelectedSize, 
+    setDetailQuantity,
+    searchQuery,
+    setSearchQuery
+  } = useUI();
+  
   const { toggleWishlist, isSaved } = useWishlist();
-  const [query, setQuery] = useState('');
   const [results, setResults] = useState<Product[]>(PRODUCTS);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -15,16 +24,16 @@ export default function Search() {
   useOverlayAnimation(containerRef, isActive);
 
   useEffect(() => {
-    if (query.trim() === '') {
+    if (searchQuery.trim() === '') {
       setResults(PRODUCTS);
     } else {
-      const q = query.trim().toLowerCase();
+      const q = searchQuery.trim().toLowerCase();
       const filtered = PRODUCTS.filter(
         (p) => p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q)
       );
       setResults(filtered);
     }
-  }, [query]);
+  }, [searchQuery]);
 
   useEffect(() => {
     if (isActive) {
@@ -65,15 +74,38 @@ export default function Search() {
         </div>
         
         <div className="overlay-content">
-          <div style={{ marginBottom: 'var(--space-6)' }}>
+          <div style={{ marginBottom: 'var(--space-6)', position: 'relative' }}>
             <input 
               ref={inputRef}
               type="text" 
               placeholder="Search within collections..." 
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="luxury-form-input"
+              style={{ paddingRight: searchQuery ? '40px' : 'var(--space-4)' }}
             />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                style={{
+                  position: 'absolute',
+                  right: '12px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--color-text-faint)',
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  lineHeight: '1',
+                  padding: '4px'
+                }}
+                aria-label="Clear search query"
+              >
+                &times;
+              </button>
+            )}
           </div>
           
           {results.length === 0 ? (

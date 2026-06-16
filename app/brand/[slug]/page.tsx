@@ -32,7 +32,7 @@ export default function BrandCatalogPage() {
   );
 
   return (
-    <div className="section" style={{ paddingTop: 'var(--space-32)', paddingBottom: 'var(--space-20)', minHeight: '80vh' }}>
+    <div className="section brand-detail-page" style={{ paddingTop: 'var(--space-32)', paddingBottom: 'var(--space-20)', minHeight: '80vh' }}>
       
       {/* Return link */}
       <Link 

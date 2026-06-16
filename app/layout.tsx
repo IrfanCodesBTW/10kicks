@@ -19,6 +19,8 @@ import Success from '@/components/overlays/Success';
 import About from '@/components/overlays/About';
 import Hamburger from '@/components/overlays/Hamburger';
 import ProductModal from '@/components/products/ProductModal';
+import SizeGuide from '@/components/overlays/SizeGuide';
+import StoryOverlay from '@/components/overlays/StoryOverlay';
 
 function CursorSpotlight() {
   const { cursorRef, ringRef } = useCursorRefs();
@@ -77,6 +79,8 @@ function LayoutContent({ children }: { children: ReactNode }) {
       <About />
       <Hamburger />
       <ProductModal />
+      <SizeGuide />
+      <StoryOverlay />
 
       {/* Toast popup */}
       <GlobalToast />

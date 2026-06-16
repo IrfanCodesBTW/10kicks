@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
 import { Product, PRODUCTS } from '../data/products';
 
 // ── CUSTOMERS / USERS INTERFACES ──
@@ -50,13 +50,33 @@ interface UIContextType {
   setIsOrdering: (val: boolean) => void;
   createdOrderId: string | null;
   setCreatedOrderId: (id: string | null) => void;
+  // New States added for Story overlays and intercept actions
+  selectedStoryId: string | null;
+  setSelectedStoryId: (id: string | null) => void;
+  pendingAction: string | null;
+  setPendingAction: (action: string | null) => void;
 }
 
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
 export function UIProvider({ children }: { children: ReactNode }) {
   const [activeOverlay, setActiveOverlay] = useState<string | null>(null);
-  const [currentUser, setCurrentUserState] = useState<User | null>(null);
+  
+  // Hydrate directly in initializer to prevent layout shift / auth latency
+  const [currentUser, setCurrentUserState] = useState<User | null>(() => {
+    if (typeof window !== 'undefined') {
+      const storedUser = localStorage.getItem('currentUser');
+      if (storedUser) {
+        try {
+          return JSON.parse(storedUser);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+    return null;
+  });
+
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResult, setSearchResult] = useState<Product[]>([]);
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
@@ -66,6 +86,10 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const [paymentTab, setPaymentTab] = useState('card');
   const [isOrdering, setIsOrdering] = useState(false);
   const [createdOrderId, setCreatedOrderId] = useState<string | null>(null);
+  
+  // New State variables
+  const [selectedStoryId, setSelectedStoryId] = useState<string | null>(null);
+  const [pendingAction, setPendingAction] = useState<string | null>(null);
 
   const [checkoutForm, setCheckoutForm] = useState({
     isValid: false,
@@ -86,22 +110,16 @@ export function UIProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     setMounted(true);
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-      try {
-        setCurrentUserState(JSON.parse(storedUser));
-      } catch (e) {
-        console.error(e);
-      }
-    }
   }, []);
 
   const setCurrentUser = (user: User | null) => {
     setCurrentUserState(user);
-    if (user) {
-      localStorage.setItem('currentUser', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('currentUser');
+    if (typeof window !== 'undefined') {
+      if (user) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      } else {
+        localStorage.removeItem('currentUser');
+      }
     }
   };
 
@@ -128,17 +146,28 @@ export function UIProvider({ children }: { children: ReactNode }) {
     document.body.classList.remove('overlay-open');
   };
 
+  // Prevent toast timer race conditions using refs
+  const toastTimerRef1 = useRef<NodeJS.Timeout | null>(null);
+  const toastTimerRef2 = useRef<NodeJS.Timeout | null>(null);
+
   const showToast = (msg: string) => {
+    if (toastTimerRef1.current) clearTimeout(toastTimerRef1.current);
+    if (toastTimerRef2.current) clearTimeout(toastTimerRef2.current);
+
     setToastMessage(msg);
     const toast = document.getElementById('customToast');
     if (toast) {
       toast.classList.add('active');
     }
-    setTimeout(() => {
+
+    toastTimerRef1.current = setTimeout(() => {
       if (toast) {
         toast.classList.remove('active');
       }
-      setToastMessage(null);
+      // Delay cleaning the state to allow transition-out to complete (450ms)
+      toastTimerRef2.current = setTimeout(() => {
+        setToastMessage(null);
+      }, 500);
     }, 3000);
   };
 
@@ -175,6 +204,10 @@ export function UIProvider({ children }: { children: ReactNode }) {
         setIsOrdering,
         createdOrderId,
         setCreatedOrderId,
+        selectedStoryId,
+        setSelectedStoryId,
+        pendingAction,
+        setPendingAction,
       }}
     >
       {children}
@@ -217,24 +250,32 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  // Hydrate directly in initializer to prevent visual flash on first render
+  const [cart, setCart] = useState<CartItem[]>(() => {
+    if (typeof window !== 'undefined') {
+      const storedCart = localStorage.getItem('cart');
+      if (storedCart) {
+        try {
+          return JSON.parse(storedCart);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+    return [];
+  });
+
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const storedCart = localStorage.getItem('cart');
-    if (storedCart) {
-      try {
-        setCart(JSON.parse(storedCart));
-      } catch (e) {
-        console.error(e);
-      }
-    }
   }, []);
 
   const saveCartAndSet = (newCart: CartItem[]) => {
     setCart(newCart);
-    localStorage.setItem('cart', JSON.stringify(newCart));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('cart', JSON.stringify(newCart));
+    }
   };
 
   const addToCart = (productId: string, size: number, qty: number) => {
@@ -339,24 +380,32 @@ interface WishlistContextType {
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
 
 export function WishlistProvider({ children }: { children: ReactNode }) {
-  const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
+  // Hydrate directly in initializer to prevent visual flash on first render
+  const [wishlist, setWishlist] = useState<WishlistItem[]>(() => {
+    if (typeof window !== 'undefined') {
+      const storedWishlist = localStorage.getItem('wishlist');
+      if (storedWishlist) {
+        try {
+          return JSON.parse(storedWishlist);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+    return [];
+  });
+
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const storedWishlist = localStorage.getItem('wishlist');
-    if (storedWishlist) {
-      try {
-        setWishlist(JSON.parse(storedWishlist));
-      } catch (e) {
-        console.error(e);
-      }
-    }
   }, []);
 
   const saveWishlistAndSet = (newWish: WishlistItem[]) => {
     setWishlist(newWish);
-    localStorage.setItem('wishlist', JSON.stringify(newWish));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('wishlist', JSON.stringify(newWish));
+    }
   };
 
   const isSaved = (id: string) => wishlist.some((item) => item.id === id);

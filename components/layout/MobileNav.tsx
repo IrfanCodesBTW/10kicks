@@ -6,7 +6,7 @@ export default function MobileNav() {
   const location = useLocation();
   const { cartCount } = useCart();
   const { wishlistCount } = useWishlist();
-  const { openOverlay, closeAllOverlays, activeOverlay } = useUI();
+  const { openOverlay, closeAllOverlays } = useUI();
 
   const handleHomeClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -16,11 +16,10 @@ export default function MobileNav() {
   };
 
   return (
-    <nav className="mobile-bottom-nav" role="navigation" aria-label="Mobile navigation">
+    <nav className="mobile-bottom-nav mob-nav" role="navigation" aria-label="Mobile navigation">
       <a 
         href="/" 
-        id="mobNavHome"
-        className={`mob-nav-item ${location.pathname === '/' && !activeOverlay ? 'active' : ''}`} 
+        className={`mob-nav-item ${location.pathname === '/' ? 'active' : ''}`} 
         onClick={handleHomeClick}
       >
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -31,12 +30,12 @@ export default function MobileNav() {
       </a>
       
       <a 
-        href="#" 
-        id="mobNavBrands"
-        className={`mob-nav-item ${location.pathname === '/brands' || location.pathname.includes('/brand/') || activeOverlay === 'hamburgerOverlay' ? 'active' : ''}`} 
+        href="/brands" 
+        className={`mob-nav-item ${location.pathname === '/brands' || location.pathname.includes('/brand/') ? 'active' : ''}`} 
         onClick={(e) => {
           e.preventDefault();
-          openOverlay('hamburgerOverlay');
+          closeAllOverlays();
+          navigate('/brands');
         }}
       >
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -50,8 +49,7 @@ export default function MobileNav() {
       
       <a 
         href="#" 
-        id="mobNavSearch"
-        className={`mob-nav-item ${activeOverlay === 'catalogOverlay' ? 'active' : ''}`} 
+        className="mob-nav-item" 
         onClick={(e) => {
           e.preventDefault();
           openOverlay('catalogOverlay');
@@ -66,8 +64,7 @@ export default function MobileNav() {
       
       <a 
         href="#" 
-        id="mobNavSaved"
-        className={`mob-nav-item ${activeOverlay === 'wishlistOverlay' ? 'active' : ''}`} 
+        className="mob-nav-item" 
         onClick={(e) => {
           e.preventDefault();
           openOverlay('wishlistOverlay');
@@ -82,8 +79,7 @@ export default function MobileNav() {
       
       <a 
         href="#" 
-        id="mobNavLocker"
-        className={`mob-nav-item ${activeOverlay === 'cartOverlay' ? 'active' : ''}`} 
+        className="mob-nav-item" 
         onClick={(e) => {
           e.preventDefault();
           openOverlay('cartOverlay');

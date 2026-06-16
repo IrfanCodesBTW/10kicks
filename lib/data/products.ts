@@ -12,6 +12,7 @@ export interface Product {
   desc: string;      // Backwards compatibility alias
   materials: string;
   styleNotes: string;
+  availableSizes?: number[]; // Added for size availability signal
 }
 
 export const PRODUCTS: Product[] = [
@@ -29,7 +30,8 @@ export const PRODUCTS: Product[] = [
     description: "Sleek, low-cut, and built for daily expression. The Air Jordan 1 Low packs iconic court heritage with lightweight materials for modern street style.",
     desc: "Sleek, low-cut, and built for daily expression. The Air Jordan 1 Low packs iconic court heritage with lightweight materials for modern street style.",
     materials: "Premium grain leather, custom rubber cupsole, encapsulated Air-Sole unit.",
-    styleNotes: "Style with wide-leg relaxed denim and a vintage boxy tee."
+    styleNotes: "Style with wide-leg relaxed denim and a vintage boxy tee.",
+    availableSizes: [6, 7, 8, 9, 10, 12]
   },
   {
     id: "nk2",
@@ -44,7 +46,8 @@ export const PRODUCTS: Product[] = [
     description: "The blueprint of sneaker culture. Premium distressed leather paneling, Wings brand detail, and the legendary Chicago colorway in a limited retro release.",
     desc: "The blueprint of sneaker culture. Premium distressed leather paneling, Wings brand detail, and the legendary Chicago colorway in a limited retro release.",
     materials: "Full grain tumble leather upper, woven tongue tags, rubber outsole.",
-    styleNotes: "Tuck into tailored utility trousers, accented with an overcoat."
+    styleNotes: "Tuck into tailored utility trousers, accented with an overcoat.",
+    availableSizes: [7, 8, 9, 11]
   },
   {
     id: "nk3",
@@ -59,7 +62,8 @@ export const PRODUCTS: Product[] = [
     description: "Sitting perfectly at the intersection of high fashion and street performance. Classic Bred color blocking with a glossy, premium patent leather shine.",
     desc: "Sitting perfectly at the intersection of high fashion and street performance. Classic Bred color blocking with a glossy, premium patent leather shine.",
     materials: "Patent leather panels, nylon tongue details, solid rubber cupsole.",
-    styleNotes: "Best styled with raw selvedge denim and a clean neutral hoodie."
+    styleNotes: "Best styled with raw selvedge denim and a clean neutral hoodie.",
+    availableSizes: [6, 7, 8, 9, 10, 11]
   },
   {
     id: "nk4",
@@ -74,7 +78,8 @@ export const PRODUCTS: Product[] = [
     description: "The defining street aesthetic. Clean, crisp white leather that matches every outfit, with a durable rubber sole for all-day comfort.",
     desc: "The defining street aesthetic. Clean, crisp white leather that matches every outfit, with a durable rubber sole for all-day comfort.",
     materials: "Full grain leather upper, foam midsole with encapsulated Air unit.",
-    styleNotes: "Style with white crew socks, clean athletic shorts, and a relaxed-fit knit sweater."
+    styleNotes: "Style with white crew socks, clean athletic shorts, and a relaxed-fit knit sweater.",
+    availableSizes: [6, 7, 8, 9, 10, 11, 12]
   },
   // Adidas
   {
@@ -90,7 +95,8 @@ export const PRODUCTS: Product[] = [
     description: "The terrace culture superstar. A football trainer born in 1950, reborn as a modern design staple. Features a low-profile gum sole and signature serrated three-stripes.",
     desc: "The terrace culture superstar. A football trainer born in 1950, reborn as a modern design staple. Features a low-profile gum sole and signature serrated three-stripes.",
     materials: "Supple leather upper, suede T-toe overlay, premium gum rubber outsole.",
-    styleNotes: "Pair with relaxed white trousers and an open knit shirt."
+    styleNotes: "Pair with relaxed white trousers and an open knit shirt.",
+    availableSizes: [6, 8, 9, 10, 11]
   },
   {
     id: "ad2",
@@ -105,7 +111,8 @@ export const PRODUCTS: Product[] = [
     description: "Retro 70s track identity engineered for the modern pavement. Lightweight nylon upper mixed with supple suede panels and a cushioned EVA midsole.",
     desc: "Retro 70s track identity engineered for the modern pavement. Lightweight nylon upper mixed with supple suede panels and a cushioned EVA midsole.",
     materials: "Nylon weave upper, premium suede trims, rippled traction outsole.",
-    styleNotes: "Wear with retro athletics shorts and a vintage track jacket."
+    styleNotes: "Wear with retro athletics shorts and a vintage track jacket.",
+    availableSizes: [7, 8, 10, 11, 12]
   },
   {
     id: "ad3",
@@ -120,7 +127,8 @@ export const PRODUCTS: Product[] = [
     description: "Suede terrace classic built on a retro indoor silhouette. Highlighted by gold-foil lettering and serrated leather stripes.",
     desc: "Suede terrace classic built on a retro indoor silhouette. Highlighted by gold-foil lettering and serrated leather stripes.",
     materials: "Suede leather upper, synthetic lining, textured rubber cupsole.",
-    styleNotes: "Best styled with relaxed chino pants and a vintage-wash collegiate tee."
+    styleNotes: "Best styled with relaxed chino pants and a vintage-wash collegiate tee.",
+    availableSizes: [6, 7, 8, 9, 10, 11, 12]
   },
   {
     id: "ad4",
@@ -135,7 +143,8 @@ export const PRODUCTS: Product[] = [
     description: "The clean tennis original. Defined by perforated three-stripes, green heel tab detailing, and a minimalist design aesthetic.",
     desc: "The clean tennis original. Defined by perforated three-stripes, green heel tab detailing, and a minimalist design aesthetic.",
     materials: "Primegreen high-performance recycled upper, rubber outsole.",
-    styleNotes: "Pair with smart linen trousers and a striped polo shirt."
+    styleNotes: "Pair with smart linen trousers and a striped polo shirt.",
+    availableSizes: [6, 7, 8, 9, 10, 11, 12]
   },
   // New balance
   {
@@ -151,7 +160,8 @@ export const PRODUCTS: Product[] = [
     description: "The 1989 court classic reborn. Simple, clean lines, and vintage off-white tones that define contemporary luxury. Suede overlays meet a chunkier heritage sole.",
     desc: "The 1989 court classic reborn. Simple, clean lines, and vintage off-white tones that define contemporary luxury. Suede overlays meet a chunkier heritage sole.",
     materials: "Perforated leather details, suede overlay, Ortholite comfort footbed.",
-    styleNotes: "Clean preppy style with pleated trousers and a heavy knit crewneck."
+    styleNotes: "Clean preppy style with pleated trousers and a heavy knit crewneck.",
+    availableSizes: [7, 8, 9, 10, 11, 12]
   },
   {
     id: "nb2",
@@ -166,7 +176,8 @@ export const PRODUCTS: Product[] = [
     description: "A futuristic expression of classic running lineage. Features warped, exaggerated design details inspired by early 2000s tech aesthetics.",
     desc: "A futuristic expression of classic running lineage. Features warped, exaggerated design details inspired by early 2000s tech aesthetics.",
     materials: "Heavy mesh upper, pigskin suede overlays, dual-density ABZORB sole.",
-    styleNotes: "Wear with cropped cargo pants and a relaxed-fit mock neck."
+    styleNotes: "Wear with cropped cargo pants and a relaxed-fit mock neck.",
+    availableSizes: [6, 7, 9, 10, 11]
   },
   {
     id: "nb3",
@@ -181,7 +192,8 @@ export const PRODUCTS: Product[] = [
     description: "A tech running icon from 2010 reimagined for the modern street. Classic N-ergy cushioning provides premium impact protection.",
     desc: "A tech running icon from 2010 reimagined for the modern street. Classic N-ergy cushioning provides premium impact protection.",
     materials: "Breathable open mesh upper, synthetic overlays, TPU heel cage.",
-    styleNotes: "Wear with wide nylon windpants and a technical half-zip pullover."
+    styleNotes: "Wear with wide nylon windpants and a technical half-zip pullover.",
+    availableSizes: [6, 7, 8, 9, 10, 11, 12]
   },
   // Yeezy
   {
@@ -197,7 +209,8 @@ export const PRODUCTS: Product[] = [
     description: "A modern design archive. Features engineered Primeknit, monofilament side stripes, and full-length Boost cushioning for a cloud-like ride.",
     desc: "A modern design archive. Features engineered Primeknit, monofilament side stripes, and full-length Boost cushioning for a cloud-like ride.",
     materials: "Recycled Primeknit upper, translucent TPU cage, responsive Boost foam.",
-    styleNotes: "Monochromatic street style with distressed denim and an oversized hoodie."
+    styleNotes: "Monochromatic street style with distressed denim and an oversized hoodie.",
+    availableSizes: [8, 9, 10]
   },
   {
     id: "yz2",
@@ -212,7 +225,8 @@ export const PRODUCTS: Product[] = [
     description: "Futuristic organic design cast in a single piece. Offers lightweight comfort, unique ventilation channels, and a sculptural aesthetic.",
     desc: "Futuristic organic design cast in a single piece. Offers lightweight comfort, unique ventilation channels, and a sculptural aesthetic.",
     materials: "Injected EVA foam blended with harvested algae.",
-    styleNotes: "Minimalist lounge look with fleece sweatpants and a luxury coat."
+    styleNotes: "Minimalist lounge look with fleece sweatpants and a luxury coat.",
+    availableSizes: [7, 8, 9, 10, 11]
   },
   // Asics
   {
@@ -228,7 +242,8 @@ export const PRODUCTS: Product[] = [
     description: "Late 2000s tech runner aesthetic with updated materials. Represents the perfect intersection of performance running and luxury streetwear.",
     desc: "Late 2000s tech runner aesthetic with updated materials. Represents the perfect intersection of performance running and luxury streetwear.",
     materials: "Open knit mesh, synthetic leather overlays, signature GEL technology.",
-    styleNotes: "Style with loose shell windbreaker pants and a utility vest."
+    styleNotes: "Style with loose shell windbreaker pants and a utility vest.",
+    availableSizes: [6, 7, 8, 9, 10, 11, 12]
   },
   // Puma
   {
@@ -244,7 +259,8 @@ export const PRODUCTS: Product[] = [
     description: "A legendary terrace style from the 80s archives. Clean, low-profile aesthetics complete with signature Palermo branding details.",
     desc: "A legendary terrace style from the 80s archives. Clean, low-profile aesthetics complete with signature Palermo branding details.",
     materials: "Smooth leather upper, suede overlays, gum rubber outsole.",
-    styleNotes: "Style with corduroy shorts, white socks, and a simple white tee."
+    styleNotes: "Style with corduroy shorts, white socks, and a simple white tee.",
+    availableSizes: [6, 7, 8, 9, 10, 11, 12]
   },
   {
     id: "pm2",
@@ -259,7 +275,8 @@ export const PRODUCTS: Product[] = [
     description: "The timeless classic that defined b-boy culture and street styling since 1968. Features the iconic Formstrip overlay.",
     desc: "The timeless classic that defined b-boy culture and street styling since 1968. Features the iconic Formstrip overlay.",
     materials: "Full premium suede upper, rubber cupsole.",
-    styleNotes: "Style with cuffed chinos, a graphic tee, and an unbuttoned overshirt."
+    styleNotes: "Style with cuffed chinos, a graphic tee, and an unbuttoned overshirt.",
+    availableSizes: [6, 7, 8, 9, 10, 11, 12]
   },
   // Converse
   {
@@ -275,7 +292,8 @@ export const PRODUCTS: Product[] = [
     description: "The standard of street canvas shoes. Combines retro details with modern comfort accents, durable heavy canvas, and varnished egret foxing.",
     desc: "The standard of street canvas shoes. Combines retro details with modern comfort accents, durable heavy canvas, and varnished egret foxing.",
     materials: "12oz organic cotton canvas upper, plush Ortholite lining, rubber toe cap.",
-    styleNotes: "Completely versatile. Pair with everything from suits to cargo shorts."
+    styleNotes: "Completely versatile. Pair with everything from suits to cargo shorts.",
+    availableSizes: [6, 7, 8, 9, 10, 11, 12]
   },
   {
     id: "cv2",
@@ -290,7 +308,8 @@ export const PRODUCTS: Product[] = [
     description: "The definitive silhouette that shaped generations. Heavyweight canvas and classic star ankle patch details.",
     desc: "The definitive silhouette that shaped generations. Heavyweight canvas and classic star ankle patch details.",
     materials: "12oz cotton canvas, varnished rubber midbox, Ortholite padding.",
-    styleNotes: "Looks best with vintage relaxed-fit trousers and a tucked-in tank."
+    styleNotes: "Looks best with vintage relaxed-fit trousers and a tucked-in tank.",
+    availableSizes: [6, 7, 8, 9, 10, 11, 12]
   },
   // Reebok
   {
@@ -306,7 +325,8 @@ export const PRODUCTS: Product[] = [
     description: "Minimalist court trainer from 1985. Retro tennis style details, clean leather overlays, and subtle Union Jack flag window box branding.",
     desc: "Minimalist court trainer from 1985. Retro tennis style details, clean leather overlays, and subtle Union Jack flag window box branding.",
     materials: "Soft garment leather upper, molded sockliner, abrasion-resistant rubber outsole.",
-    styleNotes: "Style with grey marl sweatpants and a vintage collegiate crewneck."
+    styleNotes: "Style with grey marl sweatpants and a vintage collegiate crewneck.",
+    availableSizes: [6, 7, 8, 9, 10, 11, 12]
   },
   {
     id: "rb2",
@@ -321,7 +341,8 @@ export const PRODUCTS: Product[] = [
     description: "A running silhouette born in 1983, now a street classic. Soft premium leather provides ultimate everyday comfort.",
     desc: "A running silhouette born in 1983, now a street classic. Soft premium leather provides ultimate everyday comfort.",
     materials: "Garment leather upper, lightweight die-cut EVA midsole, rubber outsole.",
-    styleNotes: "Pair with light-wash blue denim and a relaxed-fit coach jacket."
+    styleNotes: "Pair with light-wash blue denim and a relaxed-fit coach jacket.",
+    availableSizes: [6, 7, 8, 9, 10, 11, 12]
   },
   // Vans
   {
@@ -337,7 +358,8 @@ export const PRODUCTS: Product[] = [
     description: "The skate classic that first bared the iconic side stripe. Vulcanized waffle sole and durable canvas/suede design panels.",
     desc: "The skate classic that first bared the iconic side stripe. Vulcanized waffle sole and durable canvas/suede design panels.",
     materials: "Suede and canvas upper, reinforced toe caps, rubber waffle outsole.",
-    styleNotes: "Looks classic with black dickies trousers and a heavyweight graphic tee."
+    styleNotes: "Looks classic with black dickies trousers and a heavyweight graphic tee.",
+    availableSizes: [6, 7, 8, 9, 10, 11, 12]
   },
   {
     id: "vn2",
@@ -352,6 +374,7 @@ export const PRODUCTS: Product[] = [
     description: "The legendary low-profile slip-on with side accents and checkerboard printing that defined skate and pop culture.",
     desc: "The legendary low-profile slip-on with side accents and checkerboard printing that defined skate and pop culture.",
     materials: "Sturdy canvas upper, elastic side accents, waffle rubber sole.",
-    styleNotes: "Style with loose denim and a relaxed-fit linen shirt."
+    styleNotes: "Style with loose denim and a relaxed-fit linen shirt.",
+    availableSizes: [6, 7, 8, 9, 10, 11, 12]
   }
 ];

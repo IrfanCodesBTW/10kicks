@@ -1,11 +1,14 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Animation Regression', () => {
-  test('custom cursor is hidden on touch devices', async ({ page }) => {
-    await page.goto('/');
-    await page.locator('.custom-cursor').waitFor({ state: 'attached', timeout: 5000 });
-    const display = await page.locator('.custom-cursor').evaluate(el => window.getComputedStyle(el).display);
-    expect(display).toBe('none');
+  test.describe('Touch Devices', () => {
+    test.use({ hasTouch: true });
+    test('custom cursor is hidden on touch devices', async ({ page }) => {
+      await page.goto('/');
+      await page.locator('.custom-cursor').waitFor({ state: 'attached', timeout: 5000 });
+      const display = await page.locator('.custom-cursor').evaluate(el => window.getComputedStyle(el).display);
+      expect(display).toBe('none');
+    });
   });
 
   test('hero content is visible after load', async ({ page }) => {
@@ -62,7 +65,7 @@ test.describe('Animation Regression', () => {
     await page.goto('/');
     await page.locator('[title="Locker"]').click();
     await expect(page.locator('.overlay-backdrop.active')).toBeVisible();
-    await page.locator('.overlay-close').click();
+    await page.locator('.overlay-backdrop.active .overlay-close').click();
     await expect(page.locator('.overlay-backdrop.active')).toBeHidden();
   });
 });

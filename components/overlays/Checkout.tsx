@@ -26,7 +26,9 @@ export default function Checkout() {
   const [upiId, setUpiId] = useState('');
   const [selectedUpiApp, setSelectedUpiApp] = useState('');
   const [selectedBank, setSelectedBank] = useState('');
+  
   const [isSubmitting, setIsOrdering] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (activeOverlay === 'checkoutOverlay' && currentUser) {
@@ -39,6 +41,10 @@ export default function Checkout() {
         setLn(parts.slice(1).join(' ') || '');
       }
     }
+    // Reset errors when overlay is opened
+    if (activeOverlay === 'checkoutOverlay') {
+      setErrors({});
+    }
   }, [activeOverlay, currentUser]);
 
   const isActive = activeOverlay === 'checkoutOverlay';
@@ -49,6 +55,8 @@ export default function Checkout() {
     const v = val.replace(/\D/g, '').slice(0, 16);
     const formatted = v.match(/.{1,4}/g)?.join(' ') || v;
     setCardNum(formatted);
+    // Validate cardNum progressively
+    validateField('cardNum', formatted);
   };
 
   const formatCardExpInput = (val: string) => {
@@ -57,6 +65,8 @@ export default function Checkout() {
       v = v.slice(0, 2) + '/' + v.slice(2);
     }
     setCardExp(v);
+    // Validate cardExp progressively
+    validateField('cardExp', v);
   };
 
   const calculateFinalTotal = () => {
@@ -67,37 +77,112 @@ export default function Checkout() {
     return sub + gstValue + codFee;
   };
 
-  const handlePlaceOrder = () => {
-    if (!fn.trim() || !address.trim() || !phone.trim() || !city.trim() || !pincode.trim()) {
-      showToast('⚠️ Complete shipping details.');
-      return;
-    }
-    if (phone.replace(/\D/g, '').length < 10) {
-      showToast('⚠️ Enter a valid contact phone.');
-      return;
+  // Form Field Validation Logic
+  const validateField = (name: string, value: string) => {
+    let err = '';
+    if (name === 'fn' && !value.trim()) {
+      err = 'First Name is required.';
+    } else if (name === 'email') {
+      if (!value.trim()) {
+        err = 'Email Address is required.';
+      } else if (!value.includes('@') || value.length < 5) {
+        err = 'Please enter a valid email address.';
+      }
+    } else if (name === 'phone') {
+      const parsed = value.replace(/\D/g, '');
+      if (!value.trim()) {
+        err = 'Phone contact is required.';
+      } else if (parsed.length < 10) {
+        err = 'Phone number must be at least 10 digits.';
+      }
+    } else if (name === 'address' && !value.trim()) {
+      err = 'Delivery Address is required.';
+    } else if (name === 'city' && !value.trim()) {
+      err = 'City is required.';
+    } else if (name === 'pincode') {
+      if (!value.trim()) {
+        err = 'Pincode is required.';
+      } else if (value.length < 6) {
+        err = 'Pincode must be 6 digits.';
+      }
+    } else if (payTab === 'card') {
+      if (name === 'cardNum') {
+        const parsed = value.replace(/\s/g, '');
+        if (!value.trim()) {
+          err = 'Card number is required.';
+        } else if (parsed.length < 16) {
+          err = 'Card number must be 16 digits.';
+        }
+      } else if (name === 'cardExp') {
+        if (!value.trim()) {
+          err = 'Expiry MM/YY is required.';
+        } else if (value.length < 5) {
+          err = 'Format must be MM/YY.';
+        } else {
+          const [m, y] = value.split('/');
+          const month = parseInt(m, 10);
+          const year = parseInt(y, 10);
+          const now = new Date();
+          const curMonth = now.getMonth() + 1;
+          const curYear = parseInt(now.getFullYear().toString().slice(-2), 10);
+          if (isNaN(month) || isNaN(year) || month < 1 || month > 12) {
+            err = 'Invalid expiry date.';
+          } else if (year < curYear || (year === curYear && month < curMonth)) {
+            err = 'Card has expired.';
+          }
+        }
+      } else if (name === 'cardCvv') {
+        if (!value.trim()) {
+          err = 'CVV Key is required.';
+        } else if (value.length < 3) {
+          err = 'CVV must be 3 digits.';
+        }
+      }
+    } else if (payTab === 'upi' && name === 'upiId') {
+      if (!value.trim()) {
+        err = 'UPI Address VPA is required.';
+      } else if (!value.includes('@')) {
+        err = 'Invalid UPI VPA (must contain @).';
+      }
     }
 
+    setErrors((prev) => {
+      if (err) {
+        return { ...prev, [name]: err };
+      } else {
+        const copy = { ...prev };
+        delete copy[name];
+        return copy;
+      }
+    });
+    return !err;
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+    if (!validateField('fn', fn)) isValid = false;
+    if (!validateField('email', email)) isValid = false;
+    if (!validateField('phone', phone)) isValid = false;
+    if (!validateField('address', address)) isValid = false;
+    if (!validateField('city', city)) isValid = false;
+    if (!validateField('pincode', pincode)) isValid = false;
+
     if (payTab === 'card') {
-      const parsedCard = cardNum.replace(/\s/g, '');
-      if (parsedCard.length < 16) {
-        showToast('⚠️ Enter a valid 16-digit card number.');
-        return;
-      }
-      if (cardExp.length < 5) {
-        showToast('⚠️ Enter solid card expiry MM/YY.');
-        return;
-      }
-      if (cardCvv.length < 3) {
-        showToast('⚠️ Enter valid 3-digit CVV key.');
-        return;
-      }
+      if (!validateField('cardNum', cardNum)) isValid = false;
+      if (!validateField('cardExp', cardExp)) isValid = false;
+      if (!validateField('cardCvv', cardCvv)) isValid = false;
     } else if (payTab === 'upi') {
-      if (!upiId.includes('@')) {
-        showToast('⚠️ Enter a valid UPI Address identifier.');
-        return;
-      }
+      if (!validateField('upiId', upiId)) isValid = false;
     } else if (payTab === 'net' && !selectedBank) {
-      showToast('⚠️ Please select a bank.');
+      setErrors(prev => ({ ...prev, selectedBank: 'Please select a Netbanking bank option.' }));
+      isValid = false;
+    }
+    return isValid;
+  };
+
+  const handlePlaceOrder = () => {
+    if (!validateForm()) {
+      showToast('⚠️ Please fix validation errors before confirmation.');
       return;
     }
 
@@ -115,11 +200,51 @@ export default function Checkout() {
       setUpiId('');
       setSelectedUpiApp('');
       setSelectedBank('');
+      setErrors({});
       
       clearCart();
       closeOverlay('checkoutOverlay');
       openOverlay('successOverlay');
     }, 2000);
+  };
+
+  // Keyboard navigation for accessible payment tabs
+  const handleTabKeyDown = (e: React.KeyboardEvent, currentTab: 'card' | 'upi' | 'net' | 'cod') => {
+    const tabs: ('card' | 'upi' | 'net' | 'cod')[] = ['card', 'upi', 'net', 'cod'];
+    const idx = tabs.indexOf(currentTab);
+    let nextIdx = idx;
+
+    if (e.key === 'ArrowRight') {
+      nextIdx = (idx + 1) % tabs.length;
+    } else if (e.key === 'ArrowLeft') {
+      nextIdx = (idx - 1 + tabs.length) % tabs.length;
+    } else if (e.key === 'Home') {
+      nextIdx = 0;
+    } else if (e.key === 'End') {
+      nextIdx = tabs.length - 1;
+    } else {
+      return;
+    }
+
+    e.preventDefault();
+    setPayTab(tabs[nextIdx]);
+    
+    // Reset payment-specific errors
+    setErrors(prev => {
+      const copy = { ...prev };
+      delete copy.cardNum;
+      delete copy.cardExp;
+      delete copy.cardCvv;
+      delete copy.upiId;
+      delete copy.selectedBank;
+      return copy;
+    });
+
+    // Focus on DOM element of the selected tab
+    setTimeout(() => {
+      const nextTabEl = document.getElementById(`tab-${tabs[nextIdx]}`);
+      nextTabEl?.focus();
+    }, 50);
   };
 
   return (
@@ -166,8 +291,10 @@ export default function Checkout() {
                       placeholder="Irfan" 
                       className="luxury-form-input"
                       value={fn}
-                      onChange={(e) => setFn(e.target.value)}
+                      onChange={(e) => { setFn(e.target.value); if (errors.fn) validateField('fn', e.target.value); }}
+                      onBlur={() => validateField('fn', fn)}
                     />
+                    {errors.fn && <span className="field-error-message">{errors.fn}</span>}
                   </div>
                   <div className="luxury-form-group">
                     <label className="luxury-form-label" htmlFor="chkLn">Last Name</label>
@@ -190,8 +317,10 @@ export default function Checkout() {
                     placeholder="collector@archive.com" 
                     className="luxury-form-input"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => { setEmail(e.target.value); if (errors.email) validateField('email', e.target.value); }}
+                    onBlur={() => validateField('email', email)}
                   />
+                  {errors.email && <span className="field-error-message">{errors.email}</span>}
                 </div>
                 
                 <div className="luxury-form-group">
@@ -202,8 +331,10 @@ export default function Checkout() {
                     placeholder="+91 98765 43210" 
                     className="luxury-form-input"
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => { setPhone(e.target.value); if (errors.phone) validateField('phone', e.target.value); }}
+                    onBlur={() => validateField('phone', phone)}
                   />
+                  {errors.phone && <span className="field-error-message">{errors.phone}</span>}
                 </div>
                 
                 <div className="luxury-form-group">
@@ -214,8 +345,10 @@ export default function Checkout() {
                     placeholder="Street name, apartment, flat no." 
                     className="luxury-form-input"
                     value={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                    onChange={(e) => { setAddress(e.target.value); if (errors.address) validateField('address', e.target.value); }}
+                    onBlur={() => validateField('address', address)}
                   />
+                  {errors.address && <span className="field-error-message">{errors.address}</span>}
                 </div>
                 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
@@ -227,8 +360,10 @@ export default function Checkout() {
                       placeholder="Bengaluru" 
                       className="luxury-form-input"
                       value={city}
-                      onChange={(e) => setCity(e.target.value)}
+                      onChange={(e) => { setCity(e.target.value); if (errors.city) validateField('city', e.target.value); }}
+                      onBlur={() => validateField('city', city)}
                     />
+                    {errors.city && <span className="field-error-message">{errors.city}</span>}
                   </div>
                   <div className="luxury-form-group">
                     <label className="luxury-form-label" htmlFor="chkPin">Pincode</label>
@@ -239,8 +374,14 @@ export default function Checkout() {
                       maxLength={6} 
                       className="luxury-form-input"
                       value={pincode}
-                      onChange={(e) => setPincode(e.target.value.replace(/\D/g, ''))}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, '');
+                        setPincode(val);
+                        if (errors.pincode) validateField('pincode', val);
+                      }}
+                      onBlur={() => validateField('pincode', pincode)}
                     />
+                    {errors.pincode && <span className="field-error-message">{errors.pincode}</span>}
                   </div>
                 </div>
               </div>
@@ -254,40 +395,80 @@ export default function Checkout() {
                   Secure Settlement
                 </h3>
                 
-                <div className="payment-tabs" style={{ display: 'flex', gap: 'var(--space-2)', marginBottom: 'var(--space-4)' }}>
-                  <div 
+                <div className="payment-tabs" role="tablist" aria-label="Settlement Method" style={{ display: 'flex', gap: 'var(--space-2)', marginBottom: 'var(--space-4)' }}>
+                  <button 
+                    type="button"
+                    role="tab"
+                    id="tab-card"
+                    aria-controls="panel-card"
+                    aria-selected={payTab === 'card'}
+                    tabIndex={payTab === 'card' ? 0 : -1}
                     className={`payment-tab ${payTab === 'card' ? 'active' : ''}`} 
-                    style={{ padding: '6px 12px', border: '1px solid var(--color-border)', cursor: 'pointer' }} 
-                    onClick={() => setPayTab('card')}
+                    style={{ padding: '6px 12px', border: '1px solid var(--color-border)', cursor: 'pointer', background: 'none' }} 
+                    onClick={() => {
+                      setPayTab('card');
+                      setErrors(prev => { const copy = { ...prev }; delete copy.upiId; delete copy.selectedBank; return copy; });
+                    }}
+                    onKeyDown={(e) => handleTabKeyDown(e, 'card')}
                   >
                     Credit Card
-                  </div>
-                  <div 
+                  </button>
+                  <button 
+                    type="button"
+                    role="tab"
+                    id="tab-upi"
+                    aria-controls="panel-upi"
+                    aria-selected={payTab === 'upi'}
+                    tabIndex={payTab === 'upi' ? 0 : -1}
                     className={`payment-tab ${payTab === 'upi' ? 'active' : ''}`} 
-                    style={{ padding: '6px 12px', border: '1px solid var(--color-border)', cursor: 'pointer' }} 
-                    onClick={() => setPayTab('upi')}
+                    style={{ padding: '6px 12px', border: '1px solid var(--color-border)', cursor: 'pointer', background: 'none' }} 
+                    onClick={() => {
+                      setPayTab('upi');
+                      setErrors(prev => { const copy = { ...prev }; delete copy.cardNum; delete copy.cardExp; delete copy.cardCvv; delete copy.selectedBank; return copy; });
+                    }}
+                    onKeyDown={(e) => handleTabKeyDown(e, 'upi')}
                   >
                     UPI
-                  </div>
-                  <div 
+                  </button>
+                  <button 
+                    type="button"
+                    role="tab"
+                    id="tab-net"
+                    aria-controls="panel-net"
+                    aria-selected={payTab === 'net'}
+                    tabIndex={payTab === 'net' ? 0 : -1}
                     className={`payment-tab ${payTab === 'net' ? 'active' : ''}`} 
-                    style={{ padding: '6px 12px', border: '1px solid var(--color-border)', cursor: 'pointer' }} 
-                    onClick={() => setPayTab('net')}
+                    style={{ padding: '6px 12px', border: '1px solid var(--color-border)', cursor: 'pointer', background: 'none' }} 
+                    onClick={() => {
+                      setPayTab('net');
+                      setErrors(prev => { const copy = { ...prev }; delete copy.cardNum; delete copy.cardExp; delete copy.cardCvv; delete copy.upiId; return copy; });
+                    }}
+                    onKeyDown={(e) => handleTabKeyDown(e, 'net')}
                   >
                     Netbanking
-                  </div>
-                  <div 
+                  </button>
+                  <button 
+                    type="button"
+                    role="tab"
+                    id="tab-cod"
+                    aria-controls="panel-cod"
+                    aria-selected={payTab === 'cod'}
+                    tabIndex={payTab === 'cod' ? 0 : -1}
                     className={`payment-tab ${payTab === 'cod' ? 'active' : ''}`} 
-                    style={{ padding: '6px 12px', border: '1px solid var(--color-border)', cursor: 'pointer' }} 
-                    onClick={() => setPayTab('cod')}
+                    style={{ padding: '6px 12px', border: '1px solid var(--color-border)', cursor: 'pointer', background: 'none' }} 
+                    onClick={() => {
+                      setPayTab('cod');
+                      setErrors(prev => { const copy = { ...prev }; delete copy.cardNum; delete copy.cardExp; delete copy.cardCvv; delete copy.upiId; delete copy.selectedBank; return copy; });
+                    }}
+                    onKeyDown={(e) => handleTabKeyDown(e, 'cod')}
                   >
                     COD
-                  </div>
+                  </button>
                 </div>
                 
-                {/* Credit Card panels */}
+                {/* Credit Card panel */}
                 {payTab === 'card' && (
-                  <div id="chkPayCard">
+                  <div id="panel-card" role="tabpanel" aria-labelledby="tab-card" tabIndex={0} style={{ outline: 'none' }}>
                     <div className="luxury-form-group">
                       <label className="luxury-form-label" htmlFor="chkCardNum">Card Number</label>
                       <input 
@@ -297,7 +478,9 @@ export default function Checkout() {
                         className="luxury-form-input"
                         value={cardNum}
                         onChange={(e) => formatCardInput(e.target.value)}
+                        onBlur={() => validateField('cardNum', cardNum)}
                       />
+                      {errors.cardNum && <span className="field-error-message">{errors.cardNum}</span>}
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
                       <div className="luxury-form-group">
@@ -309,7 +492,9 @@ export default function Checkout() {
                           className="luxury-form-input"
                           value={cardExp}
                           onChange={(e) => formatCardExpInput(e.target.value)}
+                          onBlur={() => validateField('cardExp', cardExp)}
                         />
+                        {errors.cardExp && <span className="field-error-message">{errors.cardExp}</span>}
                       </div>
                       <div className="luxury-form-group">
                         <label className="luxury-form-label" htmlFor="chkCardCvv">CVV Key</label>
@@ -320,22 +505,30 @@ export default function Checkout() {
                           maxLength={3}
                           className="luxury-form-input"
                           value={cardCvv}
-                          onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, ''))}
+                          onChange={(e) => {
+                            const val = e.target.value.replace(/\D/g, '');
+                            setCardCvv(val);
+                            if (errors.cardCvv) validateField('cardCvv', val);
+                          }}
+                          onBlur={() => validateField('cardCvv', cardCvv)}
                         />
+                        {errors.cardCvv && <span className="field-error-message">{errors.cardCvv}</span>}
                       </div>
                     </div>
                   </div>
                 )}
                 
-                {/* UPI panels */}
+                {/* UPI panel */}
                 {payTab === 'upi' && (
-                  <div id="chkPayUpi">
-                    <div className="upi-checkout-row">
+                  <div id="panel-upi" role="tabpanel" aria-labelledby="tab-upi" tabIndex={0} style={{ outline: 'none' }}>
+                    <div className="upi-checkout-row" style={{ display: 'flex', gap: 'var(--space-2)', marginBottom: 'var(--space-4)' }}>
                       {['GPay', 'PhonePe', 'Paytm', 'BHIM'].map((app) => (
                         <button 
                           key={app}
+                          type="button"
                           className={`upi-checkout-btn ${selectedUpiApp === app ? 'selected' : ''}`} 
                           onClick={() => setSelectedUpiApp(app)}
+                          style={{ padding: '6px 12px', border: '1px solid var(--color-border)', cursor: 'pointer', background: selectedUpiApp === app ? 'var(--color-text)' : 'none', color: selectedUpiApp === app ? 'var(--color-bg)' : 'inherit' }}
                         >
                           {app}
                         </button>
@@ -349,32 +542,40 @@ export default function Checkout() {
                         placeholder="username@upi" 
                         className="luxury-form-input"
                         value={upiId}
-                        onChange={(e) => setUpiId(e.target.value)}
+                        onChange={(e) => { setUpiId(e.target.value); if (errors.upiId) validateField('upiId', e.target.value); }}
+                        onBlur={() => validateField('upiId', upiId)}
                       />
+                      {errors.upiId && <span className="field-error-message">{errors.upiId}</span>}
                     </div>
                   </div>
                 )}
                 
-                {/* Netbanking panels */}
+                {/* Netbanking panel */}
                 {payTab === 'net' && (
-                  <div id="chkPayNet">
-                    <div className="bank-checkout-grid">
+                  <div id="panel-net" role="tabpanel" aria-labelledby="tab-net" tabIndex={0} style={{ outline: 'none' }}>
+                    <div className="bank-checkout-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 'var(--space-2)', marginBottom: 'var(--space-4)' }}>
                       {['SBI', 'HDFC', 'ICICI', 'Axis Bank'].map((bank) => (
                         <button 
                           key={bank}
+                          type="button"
                           className={`bank-checkout-btn ${selectedBank === bank ? 'selected' : ''}`} 
-                          onClick={() => setSelectedBank(bank)}
+                          onClick={() => {
+                            setSelectedBank(bank);
+                            setErrors((prev) => { const copy = { ...prev }; delete copy.selectedBank; return copy; });
+                          }}
+                          style={{ padding: '8px', border: '1px solid var(--color-border)', cursor: 'pointer', background: selectedBank === bank ? 'var(--color-text)' : 'none', color: selectedBank === bank ? 'var(--color-bg)' : 'inherit' }}
                         >
                           {bank}
                         </button>
                       ))}
                     </div>
+                    {errors.selectedBank && <span className="field-error-message" style={{ display: 'block', marginBottom: '12px' }}>{errors.selectedBank}</span>}
                   </div>
                 )}
                 
-                {/* COD panels */}
+                {/* COD panel */}
                 {payTab === 'cod' && (
-                  <div id="chkPayCod">
+                  <div id="panel-cod" role="tabpanel" aria-labelledby="tab-cod" tabIndex={0} style={{ outline: 'none' }}>
                     <div style={{ fontSize: '12px', color: 'var(--color-text-muted)', lineHeight: '1.6' }}>
                       💵 Pay cash when Bluedart logistics courier arrives. Additional <strong>₹49 collection handling charge</strong> is applied to cash payments.
                     </div>

@@ -9,10 +9,12 @@ export default function Navbar() {
   const { cartCount } = useCart();
   const { wishlistCount } = useWishlist();
   const { openOverlay, closeAllOverlays, currentUser, setCurrentUser, showToast } = useUI();
-  const [searchInput, setSearchQuery] = useState('');
+  
   const { lenis, scroll } = useLenis();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [confirmSignOut, setConfirmSignOut] = useState(false);
+  
   const prevScroll = useRef(0);
   const forceOpaque = location.pathname === '/brands' || location.pathname.startsWith('/brand/');
 
@@ -60,17 +62,16 @@ export default function Navbar() {
     }
   };
 
-  const executeSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchInput.trim() === '') return;
-    closeAllOverlays();
-    // Pre-populate search query and open the search catalog overlay
-    openOverlay('catalogOverlay');
-  };
-
   const handleSignOut = () => {
-    if (window.confirm('Log out of 10KICKS Portfolio?')) {
+    if (!confirmSignOut) {
+      setConfirmSignOut(true);
+      showToast('Click user tag again to confirm sign out.');
+      setTimeout(() => {
+        setConfirmSignOut(false);
+      }, 3000);
+    } else {
       setCurrentUser(null);
+      setConfirmSignOut(false);
       showToast('Signed out of portfolio.');
     }
   };
@@ -88,26 +89,27 @@ export default function Navbar() {
         <a href="#" onClick={(e) => { e.preventDefault(); openOverlay('aboutOverlay'); }}>About</a>
       </nav>
       
-
+      {/* Drawer menu trigger */}
+      <button 
+        className="hamburger-toggle" 
+        id="hamburgerToggle" 
+        onClick={() => openOverlay('hamburgerOverlay')} 
+        aria-label="Open menu"
+        style={{ cursor: 'pointer' }}
+      >
+        <svg viewBox="0 0 24 24">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      
       <div className="nav-actions">
-        <form onSubmit={executeSearch} className="search-box">
-          <input 
-            type="text" 
-            placeholder="Search..." 
-            value={searchInput}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
-          />
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-        </form>
-        
         <button 
           className="icon-btn" 
           onClick={() => openOverlay('catalogOverlay')} 
           title="Search Archives"
+          aria-label="Search Archives"
         >
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="11" cy="11" r="8"></circle>
@@ -119,6 +121,7 @@ export default function Navbar() {
           className="icon-btn" 
           onClick={() => openOverlay('wishlistOverlay')} 
           title="Saved Collection"
+          aria-label="View Saved Collection"
         >
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
@@ -130,6 +133,7 @@ export default function Navbar() {
           className="icon-btn" 
           onClick={() => openOverlay('cartOverlay')} 
           title="Locker"
+          aria-label="View Locker Cart"
         >
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -139,34 +143,20 @@ export default function Navbar() {
           {cartCount > 0 && <span className="icon-cnt">{cartCount}</span>}
         </button>
         
-        {/* Drawer menu trigger */}
-        <button 
-          className="hamburger-toggle" 
-          id="hamburgerToggle" 
-          onClick={() => openOverlay('hamburgerOverlay')} 
-          aria-label="Open menu"
-          style={{ cursor: 'pointer' }}
-        >
-          <svg viewBox="0 0 24 24">
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
-        
         {currentUser ? (
           <button 
             type="button" 
             className="btn-nav-auth" 
             id="btn-user" 
             onClick={handleSignOut}
-            style={{ borderColor: 'var(--color-gold)', color: 'var(--color-gold)', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
+            style={{ borderColor: confirmSignOut ? 'var(--color-accent)' : 'var(--color-gold)', color: confirmSignOut ? 'var(--color-accent)' : 'var(--color-gold)', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
+            aria-label="Sign out profile"
           >
             <svg viewBox="0 0 24 24" style={{ width: '13px', height: '13px', stroke: 'currentColor', strokeWidth: 2, fill: 'none' }}>
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <span>{currentUser.name.split(' ')[0]}</span>
+            <span>{confirmSignOut ? 'Sign Out?' : currentUser.name.split(' ')[0]}</span>
           </button>
         ) : (
           <button 
@@ -175,6 +165,7 @@ export default function Navbar() {
             id="btn-login" 
             onClick={() => openOverlay('authOverlay')}
             style={{ cursor: 'pointer' }}
+            aria-label="Access Profile"
           >
             Access
           </button>

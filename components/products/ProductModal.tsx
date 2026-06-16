@@ -7,6 +7,7 @@ export default function ProductModal() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { 
     activeOverlay, 
+    openOverlay,
     closeOverlay, 
     selectedProductId, 
     selectedSize, 
@@ -121,23 +122,29 @@ export default function ProductModal() {
                     <span>Select Size (UK)</span>
                     <span 
                       className="size-guide-link" 
-                      onClick={() => showToast('Size Guide: Standard UK sizing matches US - 1.')}
+                      onClick={() => openOverlay('sizeGuideOverlay')}
                       style={{ textDecoration: 'underline', cursor: 'pointer' }}
                     >
                       Size Chart
                     </span>
                   </div>
-                  
                   <div className="detail-sizes-grid">
-                    {SIZES.map((sz) => (
-                      <button 
-                        key={sz}
-                        className={`detail-size-btn ${selectedSize === sz ? 'active' : ''}`} 
-                        onClick={() => setSelectedSize(sz)}
-                      >
-                        {sz}
-                      </button>
-                    ))}
+                    {SIZES.map((sz) => {
+                      const isAvailable = p.availableSizes ? p.availableSizes.includes(sz) : true;
+                      return (
+                        <button 
+                          key={sz}
+                          type="button"
+                          className={`detail-size-btn ${selectedSize === sz ? 'active' : ''} ${!isAvailable ? 'sold-out' : ''}`} 
+                          onClick={() => isAvailable && setSelectedSize(sz)}
+                          disabled={!isAvailable}
+                          aria-disabled={!isAvailable}
+                          aria-pressed={selectedSize === sz}
+                        >
+                          {sz}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
                 

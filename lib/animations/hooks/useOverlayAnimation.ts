@@ -1,5 +1,6 @@
 import { useEffect, RefObject, useRef } from 'react';
 import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import { usePrefersReducedMotion } from '@/lib/hooks/useMediaQuery';
 import { useUI } from '@/lib/context/AppContext';
 
@@ -11,7 +12,7 @@ export function useOverlayAnimation(
   const prevActiveRef = useRef(isActive);
   const { closeAllOverlays } = useUI();
 
-  useEffect(() => {
+  useGSAP(() => {
     if (!containerRef.current) return;
     const container = containerRef.current;
     const header = container.querySelector('.overlay-header') as HTMLElement;
@@ -21,14 +22,10 @@ export function useOverlayAnimation(
     if (isActive && !prevActiveRef.current) {
       document.body.style.overflow = 'hidden';
 
-      if (!prefersReducedMotion && header) {
-        gsap.fromTo(header, { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', delay: 0.25 });
-      }
-      if (!prefersReducedMotion && content) {
-        gsap.fromTo(content, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', delay: 0.3 });
-      }
-      if (!prefersReducedMotion && footer) {
-        gsap.fromTo(footer, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', delay: 0.35 });
+      if (!prefersReducedMotion) {
+        if (header) gsap.fromTo(header, { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', delay: 0.1 });
+        if (content) gsap.fromTo(content, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', delay: 0.15 });
+        if (footer) gsap.fromTo(footer, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', delay: 0.2 });
       }
     }
 
@@ -37,7 +34,7 @@ export function useOverlayAnimation(
     }
 
     prevActiveRef.current = isActive;
-  }, [isActive, prefersReducedMotion, containerRef]);
+  }, { dependencies: [isActive, prefersReducedMotion], scope: containerRef });
 
   // Keydown Escape event listener registered when this overlay is active
   useEffect(() => {
